@@ -1,3 +1,8 @@
+from __future__ import annotations
+import re
+
+from src.room import Room
+from src.error import Error
 
 def __get_file_content(file: str) -> list[str]:
     lines: list[str] = []
@@ -29,15 +34,11 @@ def __remove_comment(line: str) -> str:
         return line[:comment_index].strip()
     return line
 
-if __name__ == '__main__':
+def parse(file: str) -> tuple[int, Room, Room, dict[str, Room]]:
     room_pattern = re.compile(r"^([^-]+) \d+ \d+$")
     link_pattern = re.compile(r"^([^-]+)-([^-]+)$")
 
-    argparse = a.ArgumentParser()
-    argparse.add_argument("file", help="file containing the map")
-
-    args = argparse.parse_args()
-    lines = __get_file_content(args.file)
+    lines = __get_file_content(file)
 
     ants: int = -1
     start: Room = None
@@ -46,8 +47,11 @@ if __name__ == '__main__':
     rooms_finished: bool = False
 
     lines = list(__remove_comment(line) for line in lines)
-    for i in range(0, len(lines)):
+    i = 0
+    l = len(lines)
+    while i < l:
         line = lines[i]
+        i += 1
         if not line:
             continue
         if ants == -1:
@@ -57,19 +61,20 @@ if __name__ == '__main__':
             continue
         if not rooms_finished:
             if line == "##start":
-                i += 1
                 line = lines[i]
+                i += 1
                 if result := re.search(room_pattern, line):
                     start = Room(result.group(1))
-                    rooms[result.group(1)] = start
+                    rooms[start.name] = start
             elif line == "##end":
-                i += 1
                 line = lines[i]
+                i += 1
                 if result := re.search(room_pattern, line):
                     end = Room(result.group(1))
-                    rooms[result.group(1)] = end
+                    rooms[end.name] = end
             elif result := re.search(room_pattern, line):
-                rooms[result.group(1)] = Room(result.group(1))
+                room = Room(result.group(1))
+                rooms[room.name] = room
             else:
                 rooms_finished = True
         if rooms_finished:
@@ -78,4 +83,6 @@ if __name__ == '__main__':
                 room2: Room = rooms[result.group(2)]
                 room1.neighbors.append(room2)
                 room2.neighbors.append(room1)
-    print(f"Ants: {ants}\nGoal: {start.name} -> {end.name}\n{rooms}")
+    # print(f"Ants: {ants}\nGoal: {start.name} -> {end.name}\n{rooms}")
+
+    return (ants, start, end, rooms)

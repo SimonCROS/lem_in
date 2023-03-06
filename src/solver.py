@@ -26,15 +26,11 @@ def uniform_cost(start: Room, goal: Room) -> Room | None:
 
         for child in current.neighbors:
             if closed_list.get(child.name):
-                if child.cost > current.cost + 1:
-                    child.cost = current.cost + 1
-                    child.parent = current
                 continue
-
-            child.cost = current.cost + 1
 
             if open_list.get(child.name) is None or child.cost < open_list[child.name].cost:
                 heapq.heappush(open_list_q, (child.cost, child.name))
                 open_list[child.name] = child
+                child.parent = current
     
     return None
