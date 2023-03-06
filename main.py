@@ -45,19 +45,40 @@ if __name__ == '__main__':
 
     checks = min(ants, len(start.neighbors), len(end.neighbors))
     print(checks)
+
+    results: list[list[Room]] = []
     
-    while res := uniform_cost(start, end):
+    i = 0
+    while i < checks and (res := uniform_cost(start, end)):
         print("===== Found =====")
         c = res
-        len = 0
+        el = []
         while c:
-            print(c.name)
             c.cost += 1
+            el.append(c)
             c = c.parent
-            len += 1
+        
+        results.append(el)
+        
+        # Reset
         for r in rooms.values():
             r.parent = None
-        if end.cost > checks:
-            break
-    # else:
-    #     print("Not found")
+        i += 1
+    else:
+        print("Not found")
+
+    best: list[list[Room]] = None
+    best_score: float = -1
+    
+    # 1. iterer sur chaque element
+    #   LISTE = [element]
+    #   2. calculer score -> RES
+    #     si RES < best_score
+    #       best = LISTE (copie)
+    #   3. iterer sur chaque autre element pas dans LISTE -> element2
+    #       si element2 compatible score < RES
+    #           ajouter element2 à LISTE
+    #           rejouer les étapes 2 et 3. (récursion)
+    #           retirer element2 de LISTE
+
+

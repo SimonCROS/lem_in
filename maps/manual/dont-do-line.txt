@@ -22,6 +22,6 @@
 # Left path
 0-4
 4-2
-# Riht path
+# Right path
 1-5
 5-3

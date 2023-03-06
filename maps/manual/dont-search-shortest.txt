@@ -1,14 +1,14 @@
 3
 # Should find 4, not 5
-#   0
-#  /|
-# 4 1
-#  \|\
-#   2 5
-#   | |
-#   | 6
-#   |/
-#   3
+#   __0
+#  / /|
+# 7 4 1
+#  \_\|\
+#     2 5
+#     | |
+#     | 6
+#     |/
+#     3
 ##start
 0 0 0
 1 1 1
@@ -18,14 +18,18 @@
 4 4 4
 5 5 5
 6 6 6
+7 7 7
 # Central path
 0-1
 1-2
 2-3
-# Left path
+# First left path
 0-4
 4-2
-# Riht path
+# Second left path
+0-7
+7-2
+# Right path
 1-5
 5-6
 6-3
