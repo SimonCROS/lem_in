@@ -60,18 +60,15 @@ if __name__ == '__main__':
                 el.append(c)
                 c = c.parent
 
-            if len(el) < best_score or best_score == -1:
-                results.append(el)
+            results.append(el)
 
-                score = _score(results)
-                print(score, len(results), len(el))
-                if score < previous_score or previous_score == -1:
-                    previous_score = score
-                    if score < best_score or best_score == -1:
-                        best = results.copy()
-                        best_score = score
-                else:
-                    res = None
+            score = _score(results)
+            print(score, len(results), len(el))
+            if score < previous_score or previous_score == -1:
+                previous_score = score
+                if score < best_score or best_score == -1:
+                    best = results.copy()
+                    best_score = score
             else:
                 res = None
 
