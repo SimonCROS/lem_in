@@ -25,7 +25,7 @@ def uniform_cost(start: Room, goal: Room) -> Room | None:
             return current
 
         for child in current.neighbors:
-            if closed_list.get(child.name):
+            if child.visited or closed_list.get(child.name):
                 continue
 
             if open_list.get(child.name) is None or child.cost < open_list[child.name].cost:
