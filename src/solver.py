@@ -5,7 +5,7 @@ import heapq
 from src.room import Room
 
 
-def uniform_cost(start: Room, goal: Room) -> Room | None:
+def uniform_cost(start: Room, goal: Room, max: int) -> Room | None:
     open_list_q: list[tuple[float, str]] = [(start.cost, start.name)]
     open_list: dict[str, Room] = {start.name: start}
     closed_list: dict[str, Room] = {}
@@ -18,6 +18,9 @@ def uniform_cost(start: Room, goal: Room) -> Room | None:
 
         current: Room = open_list[current_q[1]]
 
+        if current.dist > max and max != -1:
+            return None
+
         closed_list[current.name] = current
         del open_list[current.name]
 
@@ -27,6 +30,8 @@ def uniform_cost(start: Room, goal: Room) -> Room | None:
         for child in current.neighbors:
             if child.visited or closed_list.get(child.name):
                 continue
+
+            child.dist = current.dist + 1
 
             if open_list.get(child.name) is None or child.cost < open_list[child.name].cost:
                 heapq.heappush(open_list_q, (child.cost, child.name))

@@ -51,7 +51,7 @@ if __name__ == '__main__':
 
         if i % 1000 == 0:
             print(f"{best_score} ({math.ceil(i * 100 / iter)}%)")
-        res = uniform_cost(start, end)
+        res = uniform_cost(start, end, best_score)
         if res:
             el = []
             c = res
