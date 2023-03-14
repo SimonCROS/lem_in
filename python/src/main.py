@@ -55,7 +55,7 @@ if __name__ == '__main__':
             for r in rooms.values():
                 r.selected = False
 
-            (path, cross) = bfs(start, end)
+            (path, cross) = bfs(end, start)
 
             if not path:
                 if cross:
