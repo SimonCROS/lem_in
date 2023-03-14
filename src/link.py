@@ -24,22 +24,26 @@ class Link:
     
     # -1 for cross -2 for not avaliable
     # c prototype :
-    # t_room *tryBorrowDest(t_link *link, t_room *src, bool *cross)
-    def try_borrow_dest(self, src: "Room") -> "Room" | -1 | -2:
+    # t_room *tryGetDest(t_link *link, t_room *src, bool *cross)
+    def try_get_dest(self, src: "Room") -> "Room" | -1 | -2:
         if self.left == src:
-            if not self.left:
+            if not self.left_valid:
                 return -1
             if not self.right_valid:
                 return -2
-            self.right_valid = False
             return self.right
-        else:
-            if not self.right:
+        if self.right == src:
+            if not self.right_valid:
                 return -1
             if not self.left_valid:
                 return -2
-            self.left_valid = False
             return self.left
+    
+    def invalidate_to(self, dest: "Room"):
+        if dest == self.left:
+            self.left_valid = False
+        if dest == self.right:
+            self.right_valid = False
         
     def invalidate(self):
         self.left_valid = False

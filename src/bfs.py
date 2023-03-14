@@ -25,13 +25,13 @@ def bfs(start: Room, goal: Room, max_len: int) -> tuple[list[Room] | None, Link 
         current: Room = open_list.pop(0)
 
         if current.dist > max_len and max_len != -1:
-            return None
+            return (None, None)
 
         if current == goal:
             return (_get_path(current), None)
 
         for link in current.links:
-            child: Room | -1 | -2 = link.try_borrow_dest(current)
+            child: Room | -1 | -2 = link.try_get_dest(current)
             if child == -1 or child == -2:
                 if child == -1 and not first_cross:
                     first_cross = link

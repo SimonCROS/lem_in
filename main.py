@@ -48,11 +48,7 @@ if __name__ == '__main__':
             if l.is_valid():
                 l.reset()
         
-        print("----------")
-
         while True:
-            print("=====")
-            
             if len(results) >= checks:
                 break
             
@@ -66,6 +62,11 @@ if __name__ == '__main__':
                 if cross:
                     cross.invalidate()
                 break
+            
+            for step in path:
+                if step.parent:
+                    for link in step.parent.links:
+                        link.invalidate_to(step)
             
             results.append(path)
             score = _score(results)
