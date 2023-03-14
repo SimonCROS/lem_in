@@ -1,9 +1,9 @@
 from __future__ import annotations
 import re
 
-from src.room import Room
-from src.link import Link
-from src.error import Error
+from room import Room
+from link import Link
+from error import Error
 
 def __get_file_content(file: str) -> list[str]:
     lines: list[str] = []

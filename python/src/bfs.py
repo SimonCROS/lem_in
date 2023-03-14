@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from src.room import Room
-from src.link import Link
+from room import Room
+from link import Link
 
 def _get_path(room: Room):
     path = []

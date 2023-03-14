@@ -1,10 +1,9 @@
 from __future__ import annotations
 import argparse as a
 
-from src.bfs import bfs
-from src.room import Room
-from src.parse import parse
-import math
+from bfs import bfs
+from room import Room
+from parse import parse
 
 ants: int = -1
 best: list[list[Room]] = None

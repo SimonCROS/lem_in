@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.link import Link
+from link import Link
 
 class Room:
     name: str
