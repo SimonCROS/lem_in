@@ -22,7 +22,7 @@ def bfs(start: Room, goal: Room) -> tuple[list[Room] | None, Link | None]:
         for link in current.links:
             child: Room | -1 | -2 = link.try_get_dest(current)
             if child == -1 or child == -2 or child.selected:
-                if child == -1 and not first_cross:
+                if child == -1:
                     first_cross = link
                 continue
             child.selected = True
