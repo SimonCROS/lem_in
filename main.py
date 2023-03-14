@@ -1,7 +1,7 @@
 from __future__ import annotations
 import argparse as a
 
-from src.solver import uniform_cost
+from src.bfs import bfs
 from src.room import Room
 from src.parse import parse
 import math
@@ -33,61 +33,56 @@ if __name__ == '__main__':
     argparse.add_argument("file", help="file containing the map")
 
     args = argparse.parse_args()
-    (ants, start, end, rooms) = parse(args.file)
+    (ants, start, end, rooms, links) = parse(args.file)
 
-    checks = min(ants, len(start.neighbors), len(end.neighbors))
+    checks = min(ants, len(start.links), len(end.links))
     print(f"Checks: {checks}")
 
-    previous_score = -1
-    results: list[list[Room]] = []
-    
-    i = 0
-    iter = (checks ** 2)
-    while i < iter:
-        start.cost = 0
-        end.cost = 0
-        start.visited = False
-        end.visited = False
 
-        if i % 1000 == 0:
-            print(f"{best_score} ({math.ceil(i * 100 / iter)}%)")
-        res = uniform_cost(start, end, best_score)
-        if res:
-            el = []
-            c = res
-            while c:
-                c.visited = True
-                el.append(c)
-                c = c.parent
-
-            results.append(el)
-
-            score = _score(results)
-            print(score, len(results), len(el))
-            if score < previous_score or previous_score == -1:
-                previous_score = score
-                if score < best_score or best_score == -1:
-                    best = results.copy()
-                    best_score = score
-            else:
-                res = None
-
-        for r in rooms.values():
-            r.parent = None
+    while True:
+        results: list[list[Room]] = []
+        results_score = -1
         
-        if not res:
-            for e in results:
-                for r in e:
-                    r.cost += 1
+        # Clean before
+        for l in links:
+            if l.is_valid():
+                l.reset()
+        
+        print("----------")
 
-            # Reset
+        while True:
+            print("=====")
+            
+            if len(results) >= checks:
+                break
+            
+            # Clean before
             for r in rooms.values():
-                r.visited = False
-            results = []
-            previous_score = -1
+                r.selected = False
 
-        i += 1
-    
+            (path, cross) = bfs(start, end, max_len=results_score)
+
+            if not path:
+                if cross:
+                    cross.invalidate()
+                break
+            
+            results.append(path)
+            score = _score(results)
+            if score < results_score or results_score == -1:
+                results_score = score
+            else:
+                break
+        
+        if results_score == -1:
+            break
+
+        if results_score < best_score or best_score == -1:
+            best = results.copy()
+            best_score = results_score
+        else:
+            break
+
     print(best)
     if best:
         print(f"With a score of {_score(best) - 2}")

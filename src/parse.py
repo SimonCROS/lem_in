@@ -2,6 +2,7 @@ from __future__ import annotations
 import re
 
 from src.room import Room
+from src.link import Link
 from src.error import Error
 
 def __get_file_content(file: str) -> list[str]:
@@ -34,7 +35,7 @@ def __remove_comment(line: str) -> str:
         return line[:comment_index].strip()
     return line
 
-def parse(file: str) -> tuple[int, Room, Room, dict[str, Room]]:
+def parse(file: str) -> tuple[int, Room, Room, dict[str, Room], list[Link]]:
     room_pattern = re.compile(r"^([^-]+) \d+ \d+$")
     link_pattern = re.compile(r"^([^-]+)-([^-]+)$")
 
@@ -45,6 +46,7 @@ def parse(file: str) -> tuple[int, Room, Room, dict[str, Room]]:
     end: Room = None
     rooms: dict[str, Room] = {}
     rooms_finished: bool = False
+    links: list[Link] = []
 
     lines = list(__remove_comment(line) for line in lines)
     i = 0
@@ -79,10 +81,7 @@ def parse(file: str) -> tuple[int, Room, Room, dict[str, Room]]:
                 rooms_finished = True
         if rooms_finished:
             if result := re.search(link_pattern, line):
-                room1: Room = rooms[result.group(1)]
-                room2: Room = rooms[result.group(2)]
-                room1.neighbors.append(room2)
-                room2.neighbors.append(room1)
+                links.append(Link.create(rooms[result.group(1)], rooms[result.group(2)]))
     # print(f"Ants: {ants}\nGoal: {start.name} -> {end.name}\n{rooms}")
 
-    return (ants, start, end, rooms)
+    return (ants, start, end, rooms, links)
