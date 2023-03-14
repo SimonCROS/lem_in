@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import heapq
-
 from src.room import Room
 from src.link import Link
 
