@@ -27,16 +27,16 @@ class Link:
     # t_room *tryGetDest(t_link *link, t_room *src, bool *cross)
     def try_get_dest(self, src: "Room") -> "Room" | -1 | -2:
         if self.left == src:
-            if not self.left_valid:
-                return -1
             if not self.right_valid:
                 return -2
+            if not self.left_valid:
+                return -1
             return self.right
         if self.right == src:
-            if not self.right_valid:
-                return -1
             if not self.left_valid:
                 return -2
+            if not self.right_valid:
+                return -1
             return self.left
     
     def invalidate_to(self, dest: "Room"):
