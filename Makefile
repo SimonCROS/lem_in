@@ -5,7 +5,7 @@ NAME				:= lem-in
 # Commands
 
 override CC		:= gcc
-override CFLAGS	:= -Wall -Wextra# -Werror
+override CFLAGS	:= -Wall -Wextra -fsanitize=address -g3# -Werror
 
 # Sources
 
@@ -31,7 +31,7 @@ override OBJDIRS	:= $(sort $(dir $(OBJS)))
 
 all:		libft $(NAME)
 
-obj/%.o:	src/%.c $(HEADERS)
+obj/%.o:	src/%.c $(HEADERS) Makefile
 			$(CC) $(CFLAGS) -c $< -o $@ -Iincludes -Ilibft/includes
 
 $(OBJS):	| $(OBJDIRS)

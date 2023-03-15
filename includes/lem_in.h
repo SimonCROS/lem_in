@@ -24,6 +24,7 @@
 # define LINK_BOTH 0b00000011
 
 typedef struct s_lem_in			t_lem_in;
+typedef struct s_int_tuple		t_int_tuple;
 typedef struct s_room			t_room;
 typedef struct s_link			t_link;
 
@@ -41,6 +42,12 @@ struct s_lem_in
 	int				ants;
 	int				rooms_len;
 	int				links_len;
+};
+
+struct s_int_tuple
+{
+	int				l;
+	int				r;
 };
 
 struct s_room
@@ -64,12 +71,5 @@ struct s_link
 char		bfs(t_room *start, t_room *goal, t_link **cross);
 
 /*** Utils ********************************************************************/
-
-void		*room_to_best_entry(t_room *room);
-void		*room_to_results_entry(t_room *room);
-void		*room_to_bfs_open_entry(t_room *room);
-t_room		*best_entry_to_room(void *entry);
-t_room		*results_entry_to_room(void *entry);
-t_room		*bfs_open_entry_to_room(void *entry);
 
 #endif
