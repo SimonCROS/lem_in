@@ -73,7 +73,7 @@ static t_list	*build_path_from_parents(t_room *last)
 	{
 		if (!lst_unshift(path, current))
 		{
-			lst_destroy(path);
+			lst_destroy(path, TRUE);
 			return (NULL);
 		}
 		disable_link_to(current);
@@ -108,7 +108,8 @@ static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 			if (!path || !lst_unshift(results, path)
 				|| !get_score(data->ants, results, &score))
 			{
-				lst_clear(results);
+				lst_destroy(path, TRUE);
+				lst_clear(results, TRUE);
 				return (FALSE);
 			}
 			if (score < *results_score || *results_score == -1)
@@ -142,10 +143,9 @@ static void	reset_links(t_lem_in *data)
 	}
 }
 
-static char	alloc_error(t_lem_in *data, t_list *results)
+static char	alloc_error(t_list *results)
 {
-	lst_clear(&data->best);
-	lst_clear(results);
+	lst_clear(results, TRUE);
 	return (FALSE);
 }
 
@@ -162,19 +162,40 @@ char	lem_in(t_lem_in *data)
 	{
 		reset_links(data);
 		if (!get_path_group(data, &results, &results_score))
-			return (alloc_error(data, &results));
+			return (alloc_error(&data->best));
 		if (results_score != -1
 			&& (results_score < data->best_score || data->best_score == -1))
 		{
-			lst_clear(&data->best);
+			lst_clear(&data->best, TRUE);
 			if (!lst_copy_to(&results, &data->best))
-				return (alloc_error(data, &results));
+				return (alloc_error(&results));
+			lst_clear(&results, FALSE);
 			data->best_score = results_score;
 		}
 		else
+		{
+			lst_clear(&results, TRUE);
 			break ;
+		}
 	}
 	return (TRUE);
+}
+
+static void	clean(t_lem_in *data)
+{
+	int	i;
+
+	lst_clear(&data->best, TRUE);
+
+	i = 0;
+	while (i < data->rooms_len)
+	{
+		lst_clear(&data->rooms[i].links, TRUE);
+		i++;
+	}
+
+	// free(data->rooms);
+	// free(data->links);
 }
 
 int	main(int argc, char const *argv[])
@@ -228,7 +249,10 @@ int	main(int argc, char const *argv[])
 		.start = rooms + 0,
 		.end = rooms + 3,
 	};
-	lem_in(&data);
+	if (!lem_in(&data))
+	{
+		ft_putendl_fd("Marche po...", 2);
+	}
 
 	t_iterator it1 = iterator_new(&data.best);
 	while (iterator_has_next(&it1))
@@ -240,5 +264,7 @@ int	main(int argc, char const *argv[])
 			ft_putendl(((t_room *)iterator_next(&it2))->name);
 		}
 	}
+
+	clean(&data);
 	return (0);
 }
