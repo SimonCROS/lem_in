@@ -6,6 +6,10 @@
 /*** Types ********************************************************************/
 
 # define FAIL 2
+# define LINK_NONE 0b00000000
+# define LINK_RIGHT 0b00000010
+# define LINK_LEFT 0b00000001
+# define LINK_BOTH (LINK_RIGHT | LINK_LEFT)
 
 typedef struct s_room			t_room;
 typedef struct s_link			t_link;
@@ -27,8 +31,7 @@ struct s_link
 {
 	t_room			*left;
 	t_room			*right;
-	char			left_valid;
-	char			right_valid;
+	char			mask;
 };
 
 /*** BFS **********************************************************************/

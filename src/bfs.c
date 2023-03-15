@@ -4,16 +4,16 @@ static t_room	*try_get_dest(t_link *link, t_room *src, t_link **cross)
 {
 	if (link->left == src)
 	{
-		if (!link->left_valid)
+		if (link->mask & LINK_LEFT)
 			*cross = link;
-		else if (link->right_valid)
+		else if (!(link->mask & LINK_RIGHT))
 			return link->right;
 	}
 	if (link->right == src)
 	{
-		if (!link->right_valid)
+		if (link->mask & LINK_RIGHT)
 			*cross = link;
-		else if (link->left_valid)
+		else if (!(link->mask & LINK_LEFT))
 			return link->left;
 	}
 	return NULL;
