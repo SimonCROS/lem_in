@@ -14,6 +14,9 @@ typedef struct s_link			t_link;
 
 struct s_room
 {
+    t_centry        entry_best;
+    t_centry        entry_results;
+    t_centry        entry_open_bfs;
     char			*name;
     t_list			links;
     t_room			*parent;

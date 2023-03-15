@@ -23,39 +23,39 @@ char	bfs(t_room *start, t_room *goal, t_link **cross)
 {
 	t_room		*current;
 	t_room		*child;
-	t_list		open;
+	t_clist		open;
 	t_iterator	it;
 	t_link		*link;
 
 	*cross = NULL;
-	lst_init(&open, NULL);
-    start->selected = TRUE;
-	if (!lst_push(&open, start))
+	clst_init(&open, NULL);
+	start->selected = TRUE;
+	if (!clst_push(&open, start))
 	{
-		lst_destroy(&open);
+		clst_clear(&open);
 		return FAIL;
 	}
 
-    while (open.size)
+	while (open.size)
 	{
-        current = lst_shift(&open);
-        if (current == goal)
-            return TRUE;
-		it = iterator_new(&open);
-        while (iterator_has_next(&it))
+		current = clst_shift(&open);
+		if (current == goal)
+			return TRUE;
+		it = iterator_new(&current->links);
+		while (iterator_has_next(&it))
 		{
 			link = (t_link *)iterator_next(&it);
 			child = try_get_dest(link, current, cross);
-            if (!child || child->selected)
-                continue;
-            child->selected = TRUE;
-            child->parent = current;
-			if (!lst_push(&open, child))
+			if (!child || child->selected)
+				continue;
+			child->selected = TRUE;
+			child->parent = current;
+			if (!clst_push(&open, child))
 			{
-				lst_destroy(&open);
+				clst_clear(&open);
 				return FAIL;
 			}
 		}
 	}
-    return FALSE;
+	return FALSE;
 }
