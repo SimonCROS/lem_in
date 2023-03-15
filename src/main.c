@@ -179,66 +179,83 @@ char	lem_in(t_lem_in *data)
 
 int	main(int argc, char const *argv[])
 {
-	t_room rooms[6] = {
-		(t_room){.name = "0"},
-		(t_room){.name = "1"},
-		(t_room){.name = "2"},
-		(t_room){.name = "3"},
-		(t_room){.name = "4"},
-		(t_room){.name = "5"},
-	};
-	t_link links[7] = {
-		(t_link){.left = rooms + 0, .right = rooms + 4, .mask = 0},
-		(t_link){.left = rooms + 0, .right = rooms + 1, .mask = 0},
-		(t_link){.left = rooms + 4, .right = rooms + 2, .mask = 0},
-		(t_link){.left = rooms + 1, .right = rooms + 2, .mask = 0},
-		(t_link){.left = rooms + 1, .right = rooms + 5, .mask = 0},
-		(t_link){.left = rooms + 2, .right = rooms + 3, .mask = 0},
-		(t_link){.left = rooms + 5, .right = rooms + 3, .mask = 0},
-	};
+	// t_room rooms[6] = {
+	// 	(t_room){.name = "0"},
+	// 	(t_room){.name = "1"},
+	// 	(t_room){.name = "2"},
+	// 	(t_room){.name = "3"},
+	// 	(t_room){.name = "4"},
+	// 	(t_room){.name = "5"},
+	// };
+	// t_link links[7] = {
+	// 	(t_link){.left = rooms + 0, .right = rooms + 4, .mask = 0},
+	// 	(t_link){.left = rooms + 0, .right = rooms + 1, .mask = 0},
+	// 	(t_link){.left = rooms + 4, .right = rooms + 2, .mask = 0},
+	// 	(t_link){.left = rooms + 1, .right = rooms + 2, .mask = 0},
+	// 	(t_link){.left = rooms + 1, .right = rooms + 5, .mask = 0},
+	// 	(t_link){.left = rooms + 2, .right = rooms + 3, .mask = 0},
+	// 	(t_link){.left = rooms + 5, .right = rooms + 3, .mask = 0},
+	// };
 
-	lst_init(&rooms[0].links, NULL);
-	lst_init(&rooms[1].links, NULL);
-	lst_init(&rooms[2].links, NULL);
-	lst_init(&rooms[3].links, NULL);
-	lst_init(&rooms[4].links, NULL);
-	lst_init(&rooms[5].links, NULL);
+	// lst_init(&rooms[0].links, NULL);
+	// lst_init(&rooms[1].links, NULL);
+	// lst_init(&rooms[2].links, NULL);
+	// lst_init(&rooms[3].links, NULL);
+	// lst_init(&rooms[4].links, NULL);
+	// lst_init(&rooms[5].links, NULL);
 
-	lst_unshift(&rooms[0].links, links + 0);
-	lst_unshift(&rooms[4].links, links + 0);
-	lst_unshift(&rooms[0].links, links + 1);
-	lst_unshift(&rooms[1].links, links + 1);
-	lst_unshift(&rooms[4].links, links + 2);
-	lst_unshift(&rooms[2].links, links + 2);
-	lst_unshift(&rooms[1].links, links + 3);
-	lst_unshift(&rooms[2].links, links + 3);
-	lst_unshift(&rooms[1].links, links + 4);
-	lst_unshift(&rooms[5].links, links + 4);
-	lst_unshift(&rooms[2].links, links + 5);
-	lst_unshift(&rooms[3].links, links + 5);
-	lst_unshift(&rooms[5].links, links + 6);
-	lst_unshift(&rooms[3].links, links + 6);
+	// lst_unshift(&rooms[0].links, links + 0);
+	// lst_unshift(&rooms[4].links, links + 0);
+	// lst_unshift(&rooms[0].links, links + 1);
+	// lst_unshift(&rooms[1].links, links + 1);
+	// lst_unshift(&rooms[4].links, links + 2);
+	// lst_unshift(&rooms[2].links, links + 2);
+	// lst_unshift(&rooms[1].links, links + 3);
+	// lst_unshift(&rooms[2].links, links + 3);
+	// lst_unshift(&rooms[1].links, links + 4);
+	// lst_unshift(&rooms[5].links, links + 4);
+	// lst_unshift(&rooms[2].links, links + 5);
+	// lst_unshift(&rooms[3].links, links + 5);
+	// lst_unshift(&rooms[5].links, links + 6);
+	// lst_unshift(&rooms[3].links, links + 6);
 
-	t_lem_in data = {
-		.ants = 2,
-		.rooms = rooms,
-		.links = links,
-		.rooms_len = 6,
-		.links_len = 7,
-		.start = rooms + 0,
-		.end = rooms + 3,
-	};
-	lem_in(&data);
+	// t_lem_in data = {
+	// 	.ants = 2,
+	// 	.rooms = rooms,
+	// 	.links = links,
+	// 	.rooms_len = 6,
+	// 	.links_len = 7,
+	// 	.start = rooms + 0,
+	// 	.end = rooms + 3,
+	// };
+	// lem_in(&data);
 
-	t_iterator it1 = iterator_new(&data.best);
-	while (iterator_has_next(&it1))
-	{
-		ft_putendl("---------------------");
-		t_iterator it2 = iterator_new(((t_list *)iterator_next(&it1)));
-		while (iterator_has_next(&it2))
-		{
-			ft_putendl(((t_room *)iterator_next(&it2))->name);
-		}
-	}
+	// t_iterator it1 = iterator_new(&data.best);
+	// while (iterator_has_next(&it1))
+	// {
+	// 	ft_putendl("---------------------");
+	// 	t_iterator it2 = iterator_new(((t_list *)iterator_next(&it1)));
+	// 	while (iterator_has_next(&it2))
+	// 	{
+	// 		ft_putendl(((t_room *)iterator_next(&it2))->name);
+	// 	}
+	// }
+    int        fd;
+    char    *line;
+
+    line = NULL;
+    fd = open("test", O_RDWR);
+    if (fd < 0)
+    {
+        write(2, "Error opening file\n", 19);
+        exit(1);
+    }
+    while(ft_get_next_line(fd, 100, &line))
+    {
+        write(1, line, ft_strlen(line));
+        free(line);
+    }
+    write(1, line, ft_strlen(line));
+    free(line);
 	return (0);
 }

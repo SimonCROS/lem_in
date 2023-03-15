@@ -14,6 +14,9 @@
 # define LEM_IN_H
 
 # include "libft.h"
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 
 /*** Types ********************************************************************/
 
@@ -69,6 +72,10 @@ struct s_link
 /*** BFS **********************************************************************/
 
 char		bfs(t_room *start, t_room *goal, t_link **cross);
+
+/*** Parsing ******************************************************************/
+
+int 		ft_get_next_line(int fd, int b_size, char **line);
 
 /*** Utils ********************************************************************/
 

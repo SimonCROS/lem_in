@@ -15,6 +15,7 @@ override SRCS		:=								\
 				main.c								\
 				bfs.c								\
 				utils.c								\
+				parsing.c							\
 
 override HEADERS	:=								\
 				lem_in.h							\
