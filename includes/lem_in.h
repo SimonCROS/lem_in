@@ -1,5 +1,17 @@
-#ifndef MINISHELL_H
-# define MINISHELL_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lem_in.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: scros <scros@student.42lyon.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/15 00:00:00 by scros             #+#    #+#             */
+/*   Updated: 2023/03/15 00:00:00 by scros            ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef LEM_IN_H
+# define LEM_IN_H
 
 # include "libft.h"
 
@@ -9,7 +21,7 @@
 # define LINK_NONE 0b00000000
 # define LINK_RIGHT 0b00000010
 # define LINK_LEFT 0b00000001
-# define LINK_BOTH (LINK_RIGHT | LINK_LEFT)
+# define LINK_BOTH 0b00000011
 
 typedef struct s_room			t_room;
 typedef struct s_link			t_link;
