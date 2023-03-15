@@ -2,6 +2,7 @@
 	"files.associations": {
 		"libft.h": "c",
 		"lem_in.h": "c",
-		"unistd.h": "c"
+		"unistd.h": "c",
+		"stdlib.h": "c"
 	}
 }
