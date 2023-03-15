@@ -18,12 +18,12 @@ void	lem_in(int ants, t_room *start, t_room *end, t_room *rooms, t_link *links, 
 	t_room	*current;
 	t_list	*path;
 
-	lst_init(&best, lst_destroy);
+	lst_init(&best, (t_consumer)lst_destroy);
 	best_score = -1;
 	checks = fmini3(ants, start->links.size, end->links.size);
 	while (TRUE)
 	{
-		lst_init(&results, lst_destroy);
+		lst_init(&results, (t_consumer)lst_destroy);
 		results_score = -1;
 
 		i = 0;
@@ -56,7 +56,7 @@ void	lem_in(int ants, t_room *start, t_room *end, t_room *rooms, t_link *links, 
 				current = end;
 				while (current)
 				{
-					if (!lst_unshift(&path, current))
+					if (!lst_unshift(path, current))
 					{
 						// TODO free
 					}
