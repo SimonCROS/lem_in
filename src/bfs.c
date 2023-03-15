@@ -30,15 +30,11 @@ char	bfs(t_room *start, t_room *goal, t_link **cross)
 	*cross = NULL;
 	clst_init(&open, NULL);
 	start->selected = TRUE;
-	if (!clst_push(&open, start))
-	{
-		clst_clear(&open);
-		return FAIL;
-	}
+	clst_push(&open, room_to_bfs_open_entry(start));
 
 	while (open.size)
 	{
-		current = clst_shift(&open);
+		current = bfs_open_entry_to_room(clst_shift(&open));
 		if (current == goal)
 			return TRUE;
 		it = iterator_new(&current->links);
@@ -50,11 +46,7 @@ char	bfs(t_room *start, t_room *goal, t_link **cross)
 				continue;
 			child->selected = TRUE;
 			child->parent = current;
-			if (!clst_push(&open, child))
-			{
-				clst_clear(&open);
-				return FAIL;
-			}
+			clst_push(&open, room_to_bfs_open_entry(child));
 		}
 	}
 	return FALSE;
