@@ -18,98 +18,102 @@ static int	get_score(int ants, t_list *paths)
 	return (1);
 }
 
-void	lem_in(int ants, t_room *start, t_room *end, t_room *rooms, t_link *links, int rooms_len, int links_len)
+static void	get_next_path_group(t_lem_in *data, t_list *results, int *results_score)
 {
-	int		checks;
-	t_list	best;
-	int		best_score;
-	t_list	results;
-	int		results_score;
 	t_link	*cross;
-	int		i;
 	t_room	*current;
 	t_list	*path;
+	int		i;
 
-	lst_init(&best, (t_consumer)lst_destroy);
-	best_score = -1;
-	checks = fmini3(ants, start->links.size, end->links.size);
+	lst_init(results, (t_consumer)lst_destroy);
+	*results_score = -1;
 	while (TRUE)
 	{
-		lst_init(&results, (t_consumer)lst_destroy);
-		results_score = -1;
+		if (results->size >= data->checks)
+			break ;
 		i = 0;
-		while (i < links_len)
+		while (i < data->rooms_len)
 		{
-			if (links[i].mask != LINK_BOTH)
-				links[i].mask = LINK_NONE;
+			data->rooms[i].selected = FALSE;
 			i++;
 		}
-		while (TRUE)
+		if (bfs(data->start, data->end, &cross))
 		{
-			if (results.size >= checks)
-				break ;
-			i = 0;
-			while (i < rooms_len)
+			path = lst_new(NULL);
+			if (!path)
 			{
-				rooms[i].selected = FALSE;
-				i++;
+				// TODO free
 			}
-			if (bfs(start, end, &cross))
+			current = data->end;
+			while (current)
 			{
-				path = lst_new(NULL);
-				if (!path)
+				if (!lst_unshift(path, current))
 				{
 					// TODO free
 				}
-				current = end;
-				while (current)
+				if (current->parent)
 				{
-					if (!lst_unshift(path, current))
+					t_iterator	it = iterator_new(&current->parent->links);
+					while (iterator_has_next(&it))
 					{
-						// TODO free
+						t_link	*link = (t_link *)iterator_next(&it);
+						if (link->left == current)
+							link->mask = LINK_LEFT;
+						if (link->right == current)
+							link->mask = LINK_RIGHT;
 					}
-					if (current->parent)
-					{
-						t_iterator	it = iterator_new(&current->parent->links);
-						while (iterator_has_next(&it))
-						{
-							t_link	*link = (t_link *)iterator_next(&it);
-							if (link->left == current)
-								link->mask = LINK_LEFT;
-							if (link->right == current)
-								link->mask = LINK_RIGHT;
-						}
-					}
-					current = end->parent;
 				}
-				if (!lst_unshift(&results, path))
-				{
-					// TODO free
-				}
-				int	score = get_score(ants, &results);
-				if (score < results_score || results_score == -1)
-				{
-					results_score = score;
-				}
-				else
-					break ;
+				current = data->end->parent;
 			}
-			else
+			if (!lst_unshift(results, path))
 			{
-				if (cross)
-					cross->mask = LINK_BOTH;
-				cross = NULL;
-				break ;
+				// TODO free
 			}
-			if (results_score != -1 && (results_score < best_score || best_score == -1))
+			int	score = get_score(data->ants, results);
+			if (score < *results_score || *results_score == -1)
 			{
-				lst_clear(&best);
-				best = results;
-				best_score = results_score;
+				*results_score = score;
 			}
 			else
 				break ;
 		}
+		else
+		{
+			if (cross)
+				cross->mask = LINK_BOTH;
+			cross = NULL;
+			break ;
+		}
+	}
+}
+
+void	lem_in(t_lem_in *data)
+{
+	t_list	results;
+	int		results_score;
+	int		i;
+
+	lst_init(&data->best, (t_consumer)lst_destroy);
+	data->best_score = -1;
+	data->checks = fmini3(data->ants, data->start->links.size, data->end->links.size);
+	while (TRUE)
+	{
+		i = 0;
+		while (i < data->links_len)
+		{
+			if (data->links[i].mask != LINK_BOTH)
+				data->links[i].mask = LINK_NONE;
+			i++;
+		}
+		get_next_path_group(data, &results, &results_score);
+		if (results_score != -1 && (results_score < data->best_score || data->best_score == -1))
+		{
+			lst_clear(&data->best);
+			data->best = results;
+			data->best_score = results_score;
+		}
+		else
+			break ;
 	}
 }
 

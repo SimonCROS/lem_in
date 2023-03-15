@@ -3,6 +3,16 @@
 		"libft.h": "c",
 		"lem_in.h": "c",
 		"unistd.h": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"__bit_reference": "c",
+		"__hash_table": "c",
+		"__split_buffer": "c",
+		"array": "c",
+		"initializer_list": "c",
+		"ios": "c",
+		"string": "c",
+		"string_view": "c",
+		"unordered_map": "c",
+		"vector": "c"
 	}
 }

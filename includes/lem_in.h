@@ -23,10 +23,25 @@
 # define LINK_LEFT 0b00000001
 # define LINK_BOTH 0b00000011
 
+typedef struct s_lem_in			t_lem_in;
 typedef struct s_room			t_room;
 typedef struct s_link			t_link;
 
 /*** Structs ******************************************************************/
+
+struct s_lem_in
+{
+	t_room			*start;
+	t_room			*end;
+	t_room			*rooms;
+	t_link			*links;
+	t_list			best;
+	int				best_score;
+	int				checks;
+	int				ants;
+	int				rooms_len;
+	int				links_len;
+};
 
 struct s_room
 {
