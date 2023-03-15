@@ -15,7 +15,7 @@
 static int	get_score(int ants, t_list *paths)
 {
 	// TODO
-	return 1;
+	return (1);
 }
 
 void	lem_in(int ants, t_room *start, t_room *end, t_room *rooms, t_link *links, int rooms_len, int links_len)
@@ -37,7 +37,6 @@ void	lem_in(int ants, t_room *start, t_room *end, t_room *rooms, t_link *links, 
 	{
 		lst_init(&results, (t_consumer)lst_destroy);
 		results_score = -1;
-
 		i = 0;
 		while (i < links_len)
 		{
@@ -45,19 +44,16 @@ void	lem_in(int ants, t_room *start, t_room *end, t_room *rooms, t_link *links, 
 				links[i].mask = LINK_NONE;
 			i++;
 		}
-
 		while (TRUE)
 		{
 			if (results.size >= checks)
-				break;
-
+				break ;
 			i = 0;
 			while (i < rooms_len)
 			{
 				rooms[i].selected = FALSE;
 				i++;
 			}
-
 			if (bfs(start, end, &cross))
 			{
 				path = lst_new(NULL);
@@ -77,7 +73,7 @@ void	lem_in(int ants, t_room *start, t_room *end, t_room *rooms, t_link *links, 
 						t_iterator	it = iterator_new(&current->parent->links);
 						while (iterator_has_next(&it))
 						{
-							t_link *link = (t_link *)iterator_next(&it);
+							t_link	*link = (t_link *)iterator_next(&it);
 							if (link->left == current)
 								link->mask = LINK_LEFT;
 							if (link->right == current)
@@ -96,16 +92,15 @@ void	lem_in(int ants, t_room *start, t_room *end, t_room *rooms, t_link *links, 
 					results_score = score;
 				}
 				else
-					break;
+					break ;
 			}
 			else
 			{
 				if (cross)
 					cross->mask = LINK_BOTH;
 				cross = NULL;
-				break;
+				break ;
 			}
-
 			if (results_score != -1 && (results_score < best_score || best_score == -1))
 			{
 				lst_clear(&best);
@@ -113,12 +108,12 @@ void	lem_in(int ants, t_room *start, t_room *end, t_room *rooms, t_link *links, 
 				best_score = results_score;
 			}
 			else
-				break;
+				break ;
 		}
 	}
 }
 
-int		main(int argc, char const *argv[])
+int	main(int argc, char const *argv[])
 {
-	return 0;
+	return (0);
 }
