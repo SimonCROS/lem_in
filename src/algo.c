@@ -53,12 +53,38 @@ static t_list	*build_path_from_parents(t_room *last)
 	return (path);
 }
 
+static char	get_next_path(t_lem_in *data, t_list *results, int *results_score)
+{
+	t_link	*cross;
+	t_list	*path;
+	int		score;
+
+	if (bfs(data->start, data->end, &cross))
+	{
+		path = build_path_from_parents(data->end);
+		if (!path || !lst_unshift(results, path)
+			|| !get_score(data->ants, results, &score))
+		{
+			lst_destroy(path);
+			lst_clear(results);
+			return (FALSE);
+		}
+		if (score < *results_score || *results_score == -1)
+		{
+			*results_score = score;
+		}
+		else
+			return (TRUE);
+	}
+	if (cross)
+		cross->mask = LINK_BOTH;
+	cross = NULL;
+	return (TRUE);
+}
+
 static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 {
-	t_link		*cross;
-	t_list		*path;
-	int			i;
-	int			score;
+	int	i;
 
 	lst_init(results, (t_consumer)lst_destroy);
 	*results_score = -1;
@@ -73,30 +99,8 @@ static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 			data->rooms[i].parent = NULL;
 			i++;
 		}
-		if (bfs(data->start, data->end, &cross))
-		{
-			path = build_path_from_parents(data->end);
-			if (!path || !lst_unshift(results, path)
-				|| !get_score(data->ants, results, &score))
-			{
-				lst_destroy(path);
-				lst_clear(results);
-				return (FALSE);
-			}
-			if (score < *results_score || *results_score == -1)
-			{
-				*results_score = score;
-			}
-			else
-				break ;
-		}
-		else
-		{
-			if (cross)
-				cross->mask = LINK_BOTH;
-			cross = NULL;
-			break ;
-		}
+		if (!get_next_path(data, results, results_score))
+			return (FALSE);
 	}
 	return (TRUE);
 }
