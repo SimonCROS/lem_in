@@ -67,24 +67,26 @@ static char	get_next_path(t_lem_in *data, t_list *results, int *results_score)
 		{
 			lst_destroy(path);
 			lst_clear(results);
-			return (FALSE);
+			return (FAIL);
 		}
 		if (score < *results_score || *results_score == -1)
 		{
 			*results_score = score;
+			return (TRUE);
 		}
 		else
-			return (TRUE);
+			return (FALSE);
 	}
 	if (cross)
 		cross->mask = LINK_BOTH;
 	cross = NULL;
-	return (TRUE);
+	return (FALSE);
 }
 
 static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 {
-	int	i;
+	int		i;
+	char	res;
 
 	lst_init(results, (t_consumer)lst_destroy);
 	*results_score = -1;
@@ -99,8 +101,11 @@ static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 			data->rooms[i].parent = NULL;
 			i++;
 		}
-		if (!get_next_path(data, results, results_score))
+		res = get_next_path(data, results, results_score);
+		if (res == FAIL)
 			return (FALSE);
+		if (!res)
+			break;
 	}
 	return (TRUE);
 }
