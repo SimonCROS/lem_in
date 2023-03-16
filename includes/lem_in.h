@@ -33,6 +33,8 @@ typedef struct s_link			t_link;
 
 /*** Structs ******************************************************************/
 
+// stru
+
 struct s_lem_in
 {
 	t_room			*start;
@@ -73,9 +75,13 @@ struct s_link
 
 char		bfs(t_room *start, t_room *goal, t_link **cross);
 
-/*** Parsing ******************************************************************/
+/*** Parsing Utils ************************************************************/
 
 int 		ft_get_next_line(int fd, int b_size, char **line);
+
+/*** Parsing ******************************************************************/
+
+int			file_opener(char const *path);
 
 /*** Utils ********************************************************************/
 
