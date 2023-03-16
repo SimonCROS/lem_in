@@ -17,25 +17,14 @@ static void	clean(t_lem_in *data)
 	int	i;
 
 	lst_clear(&data->best);
-
 	i = 0;
 	while (i < data->rooms_len)
-	{
-		lst_clear(&data->rooms[i].links);
-		i++;
-	}
-
-	// free(data->rooms);
-	// free(data->links);
+		lst_clear(&data->rooms[i++].links);
+	free(data->rooms);
+	free(data->links);
 }
 
-#include <sys/resource.h>
-#include <errno.h>
-#include <limits.h>
-#include <malloc.h>
-
-int	main(int argc, char const *argv[])
-{
+/*
 	t_room rooms[6] = {
 		(t_room){.name = "0"},
 		(t_room){.name = "1"},
@@ -101,6 +90,24 @@ int	main(int argc, char const *argv[])
 		}
 	}
 
+	clean(&data);
+*/
+int	main(int argc, char const *argv[])
+{
+	t_lem_in data = {
+		.ants = 2,
+		//.rooms = rooms,
+		//.links = links,
+		.rooms_len = 6,
+		.links_len = 7,
+		//.start = rooms + 0,
+		//.end = rooms + 3,
+	};
+	lst_init(&data.best, (t_consumer)lst_destroy);
+	data.best_score = -1;
+	data.checks = fmini3(data.ants,
+			data.start->links.size, data.end->links.size);
+	lem_in(&data);
 	clean(&data);
 	return (0);
 }

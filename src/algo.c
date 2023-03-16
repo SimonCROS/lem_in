@@ -106,10 +106,6 @@ char	lem_in(t_lem_in *data)
 	t_list	results;
 	int		results_score;
 
-	lst_init(&data->best, (t_consumer)lst_destroy);
-	data->best_score = -1;
-	data->checks = fmini3(data->ants,
-			data->start->links.size, data->end->links.size);
 	while (TRUE)
 	{
 		reset_links(data);
