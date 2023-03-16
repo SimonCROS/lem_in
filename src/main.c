@@ -95,16 +95,32 @@ int	main(int argc, char const *argv[])
 	data.best_score = -1;
 	data.checks = fmini3(data.ants,
 			data.start->links.size, data.end->links.size);
-	lem_in(&data);
-	it1 = iterator_new(&data.best);
-	while (iterator_has_next(&it1))
+	if (lem_in(&data))
 	{
-		ft_putendl("---------------------");
-		it2 = iterator_new(((t_list *)iterator_next(&it1)));
-		while (iterator_has_next(&it2))
+		if (data.best_score != -1)
 		{
-			ft_putendl(((t_room *)iterator_next(&it2))->name);
+			it1 = iterator_new(&data.best);
+			while (iterator_has_next(&it1))
+			{
+				ft_putstr("[");
+				it2 = iterator_new(((t_list *)iterator_next(&it1)));
+				while (iterator_has_next(&it2))
+				{
+					ft_putstr(((t_room *)iterator_next(&it2))->name);
+					if (iterator_has_next(&it2))
+						ft_putstr(", ");
+				}
+				ft_putendl("]");
+			}
 		}
+		else
+		{
+			ft_putendl("No path were found.");
+		}
+	}
+	else
+	{
+		ft_putendl_fd("Malloc error.", 2);
 	}
 	clean(&data);
 	return (0);
