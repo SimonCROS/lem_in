@@ -26,6 +26,7 @@
 # define LINK_LEFT 0b00000001
 # define LINK_BOTH 0b00000011
 
+typedef struct s_parser			t_parser;
 typedef struct s_lem_in			t_lem_in;
 typedef struct s_int_tuple		t_int_tuple;
 typedef struct s_room			t_room;
@@ -33,7 +34,11 @@ typedef struct s_link			t_link;
 
 /*** Structs ******************************************************************/
 
-// stru
+struct s_parser
+{
+	int				ants;
+	// t_room_list		room_list;
+};
 
 struct s_lem_in
 {
@@ -82,6 +87,7 @@ int 		ft_get_next_line(int fd, int b_size, char **line);
 /*** Parsing ******************************************************************/
 
 int			file_opener(char const *path);
+void		parser(int fd);
 
 /*** Utils ********************************************************************/
 
