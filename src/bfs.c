@@ -37,11 +37,9 @@ char	bfs(t_room *start, t_room *goal, t_link **cross)
 	t_room		*child;
 	t_clist		open;
 	t_iterator	it;
-	t_link		*link;
 
 	*cross = NULL;
 	clst_init(&open, NULL);
-	start->selected = TRUE;
 	clst_push(&open, start);
 	while (open.size)
 	{
@@ -51,9 +49,8 @@ char	bfs(t_room *start, t_room *goal, t_link **cross)
 		it = iterator_new(&current->links);
 		while (iterator_has_next(&it))
 		{
-			link = (t_link *)iterator_next(&it);
-			child = try_get_dest(link, current, cross);
-			if (!child || child->selected)
+			child = try_get_dest((t_link *)iterator_next(&it), current, cross);
+			if (!child || child->selected || child == start)
 				continue ;
 			child->selected = TRUE;
 			child->parent = current;

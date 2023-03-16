@@ -13,6 +13,7 @@ override LIBFT		:= libft/libft.a
 
 override SRCS		:=								\
 				main.c								\
+				algo.c								\
 				bfs.c								\
 				utils.c								\
 

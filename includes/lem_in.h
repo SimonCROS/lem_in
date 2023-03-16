@@ -66,10 +66,18 @@ struct s_link
 	char			mask;
 };
 
+/*** Algo *********************************************************************/
+
+char	lem_in(t_lem_in *data);
+
 /*** BFS **********************************************************************/
 
-char		bfs(t_room *start, t_room *goal, t_link **cross);
+char	bfs(t_room *start, t_room *goal, t_link **cross);
 
 /*** Utils ********************************************************************/
+
+char	get_score(int ants, t_list *paths, int *max);
+char	clear_ret_false(t_list *results);
+void	reset_links(t_lem_in *data);
 
 #endif
