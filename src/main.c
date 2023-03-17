@@ -64,32 +64,9 @@ int	main(int argc, char const *argv[])
 	data.checks = fmini3(data.ants,
 			data.start->links.size, data.end->links.size);
 	if (lem_in(&data))
-	{
-		if (data.best_score != -1)
-		{
-			it1 = iterator_new(&data.best);
-			while (iterator_has_next(&it1))
-			{
-				ft_putstr("[");
-				it2 = iterator_new(((t_list *)iterator_next(&it1)));
-				while (iterator_has_next(&it2))
-				{
-					ft_putstr(((t_room *)iterator_next(&it2))->name);
-					if (iterator_has_next(&it2))
-						ft_putstr(", ");
-				}
-				ft_putendl("]");
-			}
-		}
-		else
-		{
-			ft_putendl("No path were found.");
-		}
-	}
+		print_result(&data);
 	else
-	{
 		ft_putendl_fd("Malloc error.", 2);
-	}
 	clean(&data);
 	return (0);
 }

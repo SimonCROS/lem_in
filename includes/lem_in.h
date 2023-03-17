@@ -79,6 +79,7 @@ char	bfs(t_room *start, t_room *goal, t_link **cross);
 /*** Score *******************************************************************/
 
 char	get_score(int ants, t_list *paths, int *max);
+void	print_result(t_lem_in *data);
 
 /*** Utils ********************************************************************/
 
