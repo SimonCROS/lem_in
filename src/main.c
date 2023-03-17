@@ -32,6 +32,8 @@ int	main(int argc, char const *argv[])
 	t_iterator	it1;
 	t_iterator	it2;
 
+	(void)argc;
+	(void)argv;
 	rooms[0] = create_room("0", 0, 0);
 	rooms[1] = create_room("1", 1, 1);
 	rooms[2] = create_room("2", 2, 2);

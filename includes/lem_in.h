@@ -76,13 +76,16 @@ char	lem_in(t_lem_in *data);
 
 char	bfs(t_room *start, t_room *goal, t_link **cross);
 
+/*** Score *******************************************************************/
+
+char	get_score(int ants, t_list *paths, int *max);
+
 /*** Utils ********************************************************************/
 
 char	init_link(t_link *link, t_room *left, t_room *right);
 t_room	create_room(char *name, int x, int y);
 void	reset_links(t_lem_in *data);
 char	clear_ret_false(t_list *results);
-char	get_score(int ants, t_list *paths, int *max);
 void	disable_link(t_room *from, t_room *to);
 
 #endif
