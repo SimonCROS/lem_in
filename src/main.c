@@ -24,30 +24,11 @@ static void	clean(t_lem_in *data)
 	//free(data->links);
 }
 
-/*
-	if (!lem_in(&data))
-	{
-		ft_putendl_fd("Marche po...", 2);
-	}
-
-	t_iterator it1 = iterator_new(&data.best);
-	while (iterator_has_next(&it1))
-	{
-		ft_putendl("---------------------");
-		t_iterator it2 = iterator_new(((t_list *)iterator_next(&it1)));
-		while (iterator_has_next(&it2))
-		{
-			ft_putendl(((t_room *)iterator_next(&it2))->name);
-		}
-	}
-
-	clean(&data);
-*/
 int	main(int argc, char const *argv[])
 {
 	t_lem_in	data;
-	t_room		rooms[6];
-	t_link		links[7];
+	t_room		rooms[8];
+	t_link		links[10];
 	t_iterator	it1;
 	t_iterator	it2;
 
@@ -57,18 +38,23 @@ int	main(int argc, char const *argv[])
 	rooms[3] = create_room("3", 3, 3);
 	rooms[4] = create_room("4", 4, 4);
 	rooms[5] = create_room("5", 5, 5);
-	init_link(links + 0, rooms + 0, rooms + 4);
+	rooms[6] = create_room("6", 6, 6);
+	rooms[7] = create_room("7", 7, 7);
+	init_link(links + 9, rooms + 7, rooms + 2);
+	init_link(links + 3, rooms + 1, rooms + 2);
 	init_link(links + 1, rooms + 0, rooms + 1);
 	init_link(links + 2, rooms + 4, rooms + 2);
-	init_link(links + 3, rooms + 1, rooms + 2);
 	init_link(links + 4, rooms + 1, rooms + 5);
+	init_link(links + 0, rooms + 0, rooms + 4);
+	init_link(links + 8, rooms + 6, rooms + 3);
+	init_link(links + 6, rooms + 5, rooms + 6);
+	init_link(links + 7, rooms + 0, rooms + 7);
 	init_link(links + 5, rooms + 2, rooms + 3);
-	init_link(links + 6, rooms + 5, rooms + 3);
 	data.ants = 2;
 	data.rooms = rooms;
 	data.links = links;
-	data.rooms_len = 6;
-	data.links_len = 7;
+	data.rooms_len = 8;
+	data.links_len = 10;
 	data.start = rooms + 0;
 	data.end = rooms + 3;
 	lst_init(&data.best, (t_consumer)lst_destroy);

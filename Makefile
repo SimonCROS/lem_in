@@ -5,7 +5,7 @@ NAME				:= lem-in
 # Commands
 
 override CC		:= gcc
-override CFLAGS	:= -Wall -Wextra# -fsanitize=address -g3# -Werror
+override CFLAGS	:= -Wall -Wextra -g3# -fsanitize=address# -Werror
 
 # Sources
 

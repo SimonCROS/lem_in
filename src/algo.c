@@ -79,7 +79,6 @@ static char	get_next_path(t_lem_in *data, t_list *results, int *results_score)
 	}
 	if (cross)
 		cross->mask = LINK_BOTH;
-	cross = NULL;
 	return (FALSE);
 }
 
@@ -105,7 +104,7 @@ static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 		if (res == FAIL)
 			return (FALSE);
 		if (!res)
-			break;
+			break ;
 	}
 	return (TRUE);
 }
