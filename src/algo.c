@@ -12,25 +12,6 @@
 
 #include "lem_in.h"
 
-static void	disable_link_to(t_room *room)
-{
-	t_iterator	it;
-	t_link		*link;
-
-	if (room->parent)
-	{
-		it = iterator_new(&room->parent->links);
-		while (iterator_has_next(&it))
-		{
-			link = (t_link *)iterator_next(&it);
-			if (link->left == room)
-				link->mask = LINK_LEFT;
-			if (link->right == room)
-				link->mask = LINK_RIGHT;
-		}
-	}
-}
-
 static t_list	*build_path_from_parents(t_room *last)
 {
 	t_list		*path;
@@ -47,7 +28,7 @@ static t_list	*build_path_from_parents(t_room *last)
 			lst_destroy(path);
 			return (NULL);
 		}
-		disable_link_to(current);
+		disable_link(current->parent, current);
 		current = current->parent;
 	}
 	return (path);

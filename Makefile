@@ -15,6 +15,7 @@ override SRCS		:=								\
 				main.c								\
 				algo.c								\
 				bfs.c								\
+				score.c								\
 				utils.c								\
 
 override HEADERS	:=								\

@@ -48,37 +48,27 @@ void	reset_links(t_lem_in *data)
 	}
 }
 
+void	disable_link(t_room *from, t_room *to)
+{
+	t_iterator	it;
+	t_link		*link;
+
+	if (from)
+	{
+		it = iterator_new(&from->links);
+		while (iterator_has_next(&it))
+		{
+			link = (t_link *)iterator_next(&it);
+			if (link->left == to)
+				link->mask = LINK_LEFT;
+			if (link->right == to)
+				link->mask = LINK_RIGHT;
+		}
+	}
+}
+
 char	clear_ret_false(t_list *results)
 {
 	lst_clear(results);
 	return (FALSE);
-}
-
-char	get_score(int ants, t_list *paths, int *max)
-{
-	t_int_tuple	*costs;
-	t_iterator	it;
-	t_int_tuple	min;
-	int			i;
-
-	costs = ft_calloc(paths->size, sizeof(t_int_tuple));
-	if (!costs)
-		return (FALSE);
-	it = iterator_new(paths);
-	i = 0;
-	while (iterator_has_next(&it))
-		costs[i++].l = ((t_list *)iterator_next(&it))->size;
-	*max = -1;
-	while (ants-- > 0)
-	{
-		min = costs[0];
-		i = 0;
-		while (++i < paths->size)
-			if (min.l + min.r > costs[i].l + costs[i].r)
-				min = costs[i];
-		min.r += 1;
-		*max = ft_ternary(*max < min.l + min.r, min.l + min.r, *max);
-	}
-	free(costs);
-	return (TRUE);
 }
