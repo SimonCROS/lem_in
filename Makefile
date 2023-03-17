@@ -18,6 +18,7 @@ override SRCS		:=								\
 				score.c								\
 				print.c								\
 				utils.c								\
+				debug.c								\
 
 override HEADERS	:=								\
 				lem_in.h							\

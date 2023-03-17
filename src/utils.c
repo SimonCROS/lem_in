@@ -19,6 +19,7 @@ t_room	create_room(char *name, int x, int y)
 	room.name = name;
 	room.x = x;
 	room.y = y;
+	room.ant = 0;
 	lst_init(&room.links, NULL);
 	return (room);
 }

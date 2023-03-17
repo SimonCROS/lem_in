@@ -1,4 +1,4 @@
-30
+3
 # Should find 4, not 5
 #   __0
 #  / /|

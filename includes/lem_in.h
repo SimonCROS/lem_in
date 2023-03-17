@@ -61,6 +61,7 @@ struct s_room
 	t_room			*parent;
 	int				x;
 	int				y;
+	int				ant;
 	int				dist;
 };
 
@@ -91,5 +92,9 @@ t_room	create_room(char *name, int x, int y);
 void	reset_links(t_lem_in *data);
 char	clear_ret_false(t_list *results);
 void	disable_link(t_room *from, t_room *to);
+
+/*** Debug ********************************************************************/
+
+void	debug_steps(t_lem_in *data);
 
 #endif

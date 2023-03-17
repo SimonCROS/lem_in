@@ -51,28 +51,52 @@ static void	print_links(t_lem_in *data)
 	}
 }
 
+static void	print_path_step(t_path *path,
+		int *finished, char *first_of_line, int *next_ant)
+{
+	int	i;
+	int	ant;
+
+	i = path->len;
+	while (i-- > 1)
+	{
+		ant = path->rooms[i - 1]->ant;
+		if (i == 1 && path->ants-- > 0)
+			ant = (*next_ant)++;
+		if (ant == 0)
+			continue ;
+		path->rooms[i]->ant = ant;
+		if (!*first_of_line)
+			ft_putstr(" ");
+		ft_putstr("L");
+		ft_putnbr(path->rooms[i]->ant);
+		ft_putstr("-");
+		ft_putstr(path->rooms[i]->name);
+		*first_of_line = FALSE;
+		path->rooms[i - 1]->ant = 0;
+		if (i == path->len - 1)
+			(*finished)++;
+	}
+}
+
 static void	print_steps(t_lem_in *data)
 {
 	t_iterator	it;
-	t_path		*path;
-	int			i;
+	int			finished;
+	int			next_ant;
+	char		first_of_line;
 
 	get_score(data->ants, &data->best);
-	it = iterator_new(&data->best);
-	while (iterator_has_next(&it))
+	finished = 0;
+	next_ant = 1;
+	while (finished < data->ants)
 	{
-		ft_putstr("[");
-		path = (t_path *)iterator_next(&it);
-		i = 0;
-		while (i < path->len)
-		{
-			ft_putstr(path->rooms[i++]->name);
-			if (i < path->len)
-				ft_putstr(", ");
-		}
-		ft_putstr("] -> ");
-		ft_putnbr(path->ants);
-		ft_putendl(" ants");
+		first_of_line = TRUE;
+		it = iterator_new(&data->best);
+		while (iterator_has_next(&it))
+			print_path_step((t_path *)iterator_next(&it),
+				&finished, &first_of_line, &next_ant);
+		ft_putendl("");
 	}
 	return ;
 }
