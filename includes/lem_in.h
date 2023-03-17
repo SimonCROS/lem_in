@@ -34,12 +34,6 @@ typedef struct s_link			t_link;
 
 /*** Structs ******************************************************************/
 
-struct s_parser
-{
-	int				ants;
-	// t_room_list		room_list;
-};
-
 struct s_lem_in
 {
 	t_room			*start;
@@ -87,7 +81,7 @@ int 		ft_get_next_line(int fd, int b_size, char **line);
 /*** Parsing ******************************************************************/
 
 int			file_opener(char const *path);
-void		parser(int fd);
+t_lem_in	parser(void);
 
 /*** Utils ********************************************************************/
 

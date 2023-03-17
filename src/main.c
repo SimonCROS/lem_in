@@ -179,13 +179,13 @@ char	lem_in(t_lem_in *data)
 
 int	main(int argc, char const *argv[])
 {
-	if (argc != 2)
+	if (argc != 1)
 	{
 		write(2, "Wrong number of arguments.", 26);
-		write(2, " Usage: ./lem-in path-to-map\n", 29);
+		write(2, " Usage: ./lem-in\n", 29);
 		return (1);
 	}
-	parser(file_opener(argv[1]));
+	parser();
     // while(ft_get_next_line(fd, 100, &line))
     // {
     //     write(1, line, ft_strlen(line));

@@ -12,25 +12,26 @@
 
 #include "lem_in.h"
 
-int	file_opener(char const *path)
-{
-	int	fd;
+// can't open files
+// int	file_opener(char const *path)
+// {
+// 	int	fd;
 
-	fd = open(path, O_RDWR);
-	if (fd < 0)
-	{
-		write(2, "Error opening file\n", 19);
-		exit(1);
-	}
-	return (fd);
-}
+// 	fd = open(path, O_RDWR);
+// 	if (fd < 0)
+// 	{
+// 		write(2, "Error opening file\n", 19);
+// 		exit(1);
+// 	}
+// 	return (fd);
+// }
 
-static void	ant_getter(int fd, t_parser *parsed_data)
+static void	ant_getter(t_lem_in *parsed_data)
 {
 	char	*line;
 	int		i;
 
-	while(ft_get_next_line(fd, 100, &line))
+	while(ft_get_next_line(0, 100, &line))
 	{
 		i = 0;
 		while (line[i] && ft_isdigit(line[i]))
@@ -57,24 +58,25 @@ static void	ant_getter(int fd, t_parser *parsed_data)
 	exit(1);
 }
 
-static void	room_getter(int fd, t_parser *parsed_data)
+static void	room_getter(t_lem_in *parsed_data)
 {
 
 }
 
-static void	link_getter(int fd, t_parser *parsed_data)
+static void	link_getter(t_lem_in *parsed_data)
 {
 
 }
 
-void	parser(int fd)
+t_lem_in	parser(void)
 {
 	char		*line;
-	t_parser	parsed_data;
+	t_lem_in	parsed_data;
 
-	ant_getter(fd, &parsed_data);
-	room_getter(fd, &parsed_data);
-	link_getter(fd, &parsed_data);
+	ant_getter(&parsed_data);
+	room_getter(&parsed_data);
+	link_getter(&parsed_data);
 
 	printf("ants: %i\n", parsed_data.ants);
+	return (parsed_data);
 }
