@@ -5,7 +5,7 @@ NAME				:= lem-in
 # Commands
 
 override CC		:= gcc
-override CFLAGS	:= -Wall -Wextra -fsanitize=address -g3# -Werror
+override CFLAGS	:= -Wall -Wextra# -fsanitize=address -g3# -Werror
 
 # Sources
 
@@ -13,6 +13,7 @@ override LIBFT		:= libft/libft.a
 
 override SRCS		:=								\
 				main.c								\
+				algo.c								\
 				bfs.c								\
 				utils.c								\
 				parsing.c							\

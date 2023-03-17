@@ -61,6 +61,8 @@ struct s_room
 	t_list			links;
 	t_room			*parent;
 	char			selected;
+	int				x;
+	int				y;
 };
 
 struct s_link
@@ -70,9 +72,13 @@ struct s_link
 	char			mask;
 };
 
+/*** Algo *********************************************************************/
+
+char	lem_in(t_lem_in *data);
+
 /*** BFS **********************************************************************/
 
-char		bfs(t_room *start, t_room *goal, t_link **cross);
+char	bfs(t_room *start, t_room *goal, t_link **cross);
 
 /*** Parsing Utils ************************************************************/
 
@@ -84,5 +90,10 @@ int			file_opener(char const *path);
 t_lem_in	parser(void);
 
 /*** Utils ********************************************************************/
+
+char	get_score(int ants, t_list *paths, int *max);
+char	clear_ret_false(t_list *results);
+void	reset_links(t_lem_in *data);
+t_room	create_room(char *name, int x, int y);
 
 #endif
