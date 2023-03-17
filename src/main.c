@@ -182,7 +182,7 @@ int	main(int argc, char const *argv[])
 	if (argc != 1)
 	{
 		write(2, "Wrong number of arguments.", 26);
-		write(2, " Usage: ./lem-in\n", 29);
+		write(2, " Usage: ./lem-in\n", 17);
 		return (1);
 	}
 	parser();
