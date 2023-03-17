@@ -108,10 +108,5 @@ void	print_result(t_lem_in *data)
 	print_rooms(data);
 	print_links(data);
 	ft_putendl("");
-	if (data->best_score == -1)
-	{
-		ft_putendl("No path were found.");
-		return ;
-	}
 	print_steps(data);
 }

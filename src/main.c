@@ -63,10 +63,10 @@ int	main(int argc, char const *argv[])
 	data.best_score = -1;
 	data.checks = fmini3(data.ants,
 			data.start->links.size, data.end->links.size);
-	if (lem_in(&data))
+	if (lem_in(&data) && data.best_score != -1)
 		print_result(&data);
 	else
-		ft_putendl_fd("Malloc error.", 2);
+		ft_putendl("ERROR");
 	clean(&data);
 	return (0);
 }
