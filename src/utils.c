@@ -12,6 +12,29 @@
 
 #include "lem_in.h"
 
+t_room	create_room(char *name, int x, int y)
+{
+	t_room	room;
+
+	room.name = name;
+	room.x = x;
+	room.y = y;
+	lst_init(&room.links, NULL);
+	return (room);
+}
+
+char	init_link(t_link *link, t_room *left, t_room *right)
+{
+	link->mask = LINK_NONE;
+	if (!lst_unshift(&left->links, link))
+		return (FALSE);
+	link->left = left;
+	if (!lst_unshift(&right->links, link))
+		return (FALSE);
+	link->right = right;
+	return (TRUE);
+}
+
 void	reset_links(t_lem_in *data)
 {
 	int		i;

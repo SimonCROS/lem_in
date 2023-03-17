@@ -57,6 +57,8 @@ struct s_room
 	t_list			links;
 	t_room			*parent;
 	char			selected;
+	int				x;
+	int				y;
 };
 
 struct s_link
@@ -79,5 +81,6 @@ char	bfs(t_room *start, t_room *goal, t_link **cross);
 char	get_score(int ants, t_list *paths, int *max);
 char	clear_ret_false(t_list *results);
 void	reset_links(t_lem_in *data);
+t_room	create_room(char *name, int x, int y);
 
 #endif
