@@ -52,6 +52,7 @@ int	main(int argc, char const *argv[])
 	init_link(links + links_count++, rooms + 5, rooms + 6);
 	init_link(links + links_count++, rooms + 0, rooms + 7);
 	init_link(links + links_count++, rooms + 2, rooms + 3);
+	init_link(links + links_count++, rooms + 0, rooms + 3);
 	data.ants = 2;
 	data.rooms = rooms;
 	data.links = links;
