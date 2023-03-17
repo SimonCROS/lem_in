@@ -57,6 +57,7 @@ static void	print_steps(t_lem_in *data)
 	t_path		*path;
 	int			i;
 
+	get_score(data->ants, &data->best);
 	it = iterator_new(&data->best);
 	while (iterator_has_next(&it))
 	{
@@ -69,7 +70,9 @@ static void	print_steps(t_lem_in *data)
 			if (i < path->len)
 				ft_putstr(", ");
 		}
-		ft_putendl("]");
+		ft_putstr("] -> ");
+		ft_putnbr(path->ants);
+		ft_putendl(" ants");
 	}
 	return ;
 }
