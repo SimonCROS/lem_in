@@ -12,31 +12,34 @@
 
 #include "lem_in.h"
 
-char	get_score(int ants, t_list *paths, int *max)
+static int	path_score(t_path *path)
 {
-	t_int_tuple	*costs;
-	t_iterator	it;
-	t_int_tuple	min;
-	int			i;
+	return (path->len + path->ants);
+}
 
-	costs = ft_calloc(paths->size, sizeof(t_int_tuple));
-	if (!costs)
-		return (FALSE);
+int	get_score(int ants, t_list *paths)
+{
+	int			score;
+	t_iterator	it;
+	t_path		*path;
+	t_path		*min;
+
 	it = iterator_new(paths);
-	i = 0;
 	while (iterator_has_next(&it))
-		costs[i++].l = ((t_list *)iterator_next(&it))->size;
-	*max = -1;
+		((t_path *)iterator_next(&it))->ants = 0;
+	score = -1;
+	min = NULL;
 	while (ants-- > 0)
 	{
-		min = costs[0];
-		i = 0;
-		while (++i < paths->size)
-			if (min.l + min.r > costs[i].l + costs[i].r)
-				min = costs[i];
-		min.r += 1;
-		*max = ft_ternary(*max < min.l + min.r, min.l + min.r, *max);
+		it = iterator_new(paths);
+		while (iterator_has_next(&it))
+		{
+			path = (t_path *)iterator_next(&it);
+			if (!min || path_score(path) < path_score(min))
+				min = path;
+		}
+		min->ants += 1;
+		score = fmaxi(path_score(min), score);
 	}
-	free(costs);
-	return (TRUE);
+	return (score);
 }

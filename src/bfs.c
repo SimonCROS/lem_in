@@ -50,9 +50,9 @@ char	bfs(t_room *start, t_room *goal, t_link **cross)
 		while (iterator_has_next(&it))
 		{
 			child = try_get_dest((t_link *)iterator_next(&it), current, cross);
-			if (!child || child->selected || child == start)
+			if (!child || child->dist != 0 || child == start)
 				continue ;
-			child->selected = TRUE;
+			child->dist = current->dist + 1;
 			child->parent = current;
 			clst_push(&open, child);
 		}

@@ -53,6 +53,24 @@ static void	print_links(t_lem_in *data)
 
 static void	print_steps(t_lem_in *data)
 {
+	t_iterator	it;
+	t_path		*path;
+	int			i;
+
+	it = iterator_new(&data->best);
+	while (iterator_has_next(&it))
+	{
+		ft_putstr("[");
+		path = (t_path *)iterator_next(&it);
+		i = 0;
+		while (i < path->len)
+		{
+			ft_putstr(path->rooms[i++]->name);
+			if (i < path->len)
+				ft_putstr(", ");
+		}
+		ft_putendl("]");
+	}
 	return ;
 }
 
@@ -62,11 +80,11 @@ void	print_result(t_lem_in *data)
 	ft_putendl("");
 	print_rooms(data);
 	print_links(data);
+	ft_putendl("");
 	if (data->best_score == -1)
 	{
 		ft_putendl("No path were found.");
 		return ;
 	}
-	ft_putendl("");
 	print_steps(data);
 }

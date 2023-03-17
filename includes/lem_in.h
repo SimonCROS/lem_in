@@ -24,6 +24,7 @@
 # define LINK_BOTH 0b00000011
 
 typedef struct s_lem_in			t_lem_in;
+typedef struct s_path			t_path;
 typedef struct s_int_tuple		t_int_tuple;
 typedef struct s_room			t_room;
 typedef struct s_link			t_link;
@@ -44,10 +45,12 @@ struct s_lem_in
 	int				links_len;
 };
 
-struct s_int_tuple
+// The rooms array is stored just after this struct
+struct s_path
 {
-	int				l;
-	int				r;
+	int				len;
+	int				ants;
+	t_room			**rooms;
 };
 
 struct s_room
@@ -56,9 +59,9 @@ struct s_room
 	char			*name;
 	t_list			links;
 	t_room			*parent;
-	char			selected;
 	int				x;
 	int				y;
+	int				dist;
 };
 
 struct s_link
@@ -78,7 +81,7 @@ char	bfs(t_room *start, t_room *goal, t_link **cross);
 
 /*** Score *******************************************************************/
 
-char	get_score(int ants, t_list *paths, int *max);
+int		get_score(int ants, t_list *paths);
 void	print_result(t_lem_in *data);
 
 /*** Utils ********************************************************************/
