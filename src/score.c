@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   score.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: scros <scros@student.42lyon.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,33 +12,34 @@
 
 #include "lem_in.h"
 
-static void	clean(t_lem_in *data)
+static int	path_score(t_path *path)
 {
-	int	i;
-
-	lst_clear(&data->best);
-	i = 0;
-	while (i < data->rooms_len)
-		lst_clear(&data->rooms[i++].links);
-	//free(data->rooms);
-	//free(data->links);
+	return (path->len + path->ants);
 }
 
-int	main(int argc, char const *argv[])
+int	get_score(int ants, t_list *paths)
 {
-	if (argc != 1)
+	int			score;
+	t_iterator	it;
+	t_path		*path;
+	t_path		*min;
+
+	it = iterator_new(paths);
+	while (iterator_has_next(&it))
+		((t_path *)iterator_next(&it))->ants = 0;
+	score = -1;
+	min = NULL;
+	while (ants-- > 0)
 	{
-		write(2, "Wrong number of arguments.", 26);
-		write(2, " Usage: ./lem-in\n", 17);
-		return (1);
+		it = iterator_new(paths);
+		while (iterator_has_next(&it))
+		{
+			path = (t_path *)iterator_next(&it);
+			if (!min || path_score(path) < path_score(min))
+				min = path;
+		}
+		min->ants += 1;
+		score = fmaxi(path_score(min), score);
 	}
-	parser();
-    // while(ft_get_next_line(fd, 100, &line))
-    // {
-    //     write(1, line, ft_strlen(line));
-    //     free(line);
-    // }
-    // write(1, line, ft_strlen(line));
-    // free(line);
-	return (0);
+	return (score);
 }

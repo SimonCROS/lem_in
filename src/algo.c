@@ -12,75 +12,52 @@
 
 #include "lem_in.h"
 
-static void	disable_link_to(t_room *room)
+static char	append_path(t_list *results, t_room *last)
 {
-	t_iterator	it;
-	t_link		*link;
+	t_path	*path;
+	int		i;
 
-	if (room->parent)
+	path = malloc(sizeof(t_path) + (sizeof(t_room *) * (last->dist + 1)));
+	if (!path || !lst_unshift(results, path))
 	{
-		it = iterator_new(&room->parent->links);
-		while (iterator_has_next(&it))
-		{
-			link = (t_link *)iterator_next(&it);
-			if (link->left == room)
-				link->mask = LINK_LEFT;
-			if (link->right == room)
-				link->mask = LINK_RIGHT;
-		}
+		free(path);
+		return (FALSE);
 	}
-}
-
-static t_list	*build_path_from_parents(t_room *last)
-{
-	t_list		*path;
-	t_room		*current;
-
-	path = lst_new(NULL);
-	if (!path)
-		return (NULL);
-	current = last;
-	while (current)
+	path->len = last->dist + 1;
+	path->ants = 0;
+	path->rooms = ((void *)path) + sizeof(t_path);
+	i = 0;
+	while (last)
 	{
-		if (!lst_unshift(path, current))
-		{
-			lst_destroy(path);
-			return (NULL);
-		}
-		disable_link_to(current);
-		current = current->parent;
+		path->rooms[path->len - i - 1] = last;
+		disable_link(last->parent, last);
+		last = last->parent;
+		i++;
 	}
-	return (path);
+	return (TRUE);
 }
 
 static char	get_next_path(t_lem_in *data, t_list *results, int *results_score)
 {
 	t_link	*cross;
-	t_list	*path;
 	int		score;
 
 	if (bfs(data->start, data->end, &cross))
 	{
-		path = build_path_from_parents(data->end);
-		if (!path || !lst_unshift(results, path)
-			|| !get_score(data->ants, results, &score))
-		{
-			lst_destroy(path);
-			lst_clear(results);
-			return (FAIL);
-		}
+		if (!append_path(results, data->end))
+			return (clear_ret_false(results));
+		score = get_score(data->ants, results);
 		if (score < *results_score || *results_score == -1)
 		{
 			*results_score = score;
-			return (TRUE);
+			return (1);
 		}
 		else
-			return (FALSE);
+			return (2);
 	}
 	if (cross)
 		cross->mask = LINK_BOTH;
-	cross = NULL;
-	return (FALSE);
+	return (2);
 }
 
 static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
@@ -88,7 +65,7 @@ static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 	int		i;
 	char	res;
 
-	lst_init(results, (t_consumer)lst_destroy);
+	lst_init(results, (t_consumer)free);
 	*results_score = -1;
 	while (TRUE)
 	{
@@ -97,15 +74,15 @@ static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 		i = 0;
 		while (i < data->rooms_len)
 		{
-			data->rooms[i].selected = FALSE;
+			data->rooms[i].dist = 0;
 			data->rooms[i].parent = NULL;
 			i++;
 		}
 		res = get_next_path(data, results, results_score);
-		if (res == FAIL)
+		if (res == FALSE)
 			return (FALSE);
-		if (!res)
-			break;
+		if (res == 2)
+			break ;
 	}
 	return (TRUE);
 }

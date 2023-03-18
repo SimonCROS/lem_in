@@ -5,7 +5,7 @@ NAME				:= lem-in
 # Commands
 
 override CC		:= gcc
-override CFLAGS	:= -Wall -Wextra# -fsanitize=address -g3# -Werror
+override CFLAGS	:= -Wall -Wextra -g3# -fsanitize=address# -Werror
 
 # Sources
 
@@ -15,10 +15,13 @@ override SRCS		:=								\
 				main.c								\
 				algo.c								\
 				bfs.c								\
+				score.c								\
+				print.c								\
 				utils.c								\
 				parsing.c							\
 				parsing_utils.c						\
 				parsing_more_utils.c				\
+				debug.c								\
 
 override HEADERS	:=								\
 				lem_in.h							\
