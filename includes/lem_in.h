@@ -80,6 +80,10 @@ char	lem_in(t_lem_in *data);
 
 char	bfs(t_room *start, t_room *goal, t_link **cross);
 
+/*** Parsing More Utils *******************************************************/
+
+int			ant_checker(char *line);
+
 /*** Parsing Utils ************************************************************/
 
 int 		ft_get_next_line(int fd, int b_size, char **line);

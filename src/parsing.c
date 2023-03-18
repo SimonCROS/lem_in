@@ -29,31 +29,17 @@
 static void	ant_getter(t_lem_in *parsed_data)
 {
 	char	*line;
-	int		i;
 
+	parsed_data->ants = -1;
 	while(ft_get_next_line(0, 100, &line))
 	{
-		i = 0;
-		while (line[i] && ft_isdigit(line[i]))
-			i++;
-		if (i == ft_strlen(line) && i != 0)
-		{
-			parsed_data->ants = ft_atoi(line);
-			free(line);
+		parsed_data->ants = ant_checker(line);
+		if (parsed_data->ants >= 0)
 			return ;
-		}
-		free(line);
 	}
-	i = 0;
-	while (line[i] && ft_isdigit(line[i]))
-		i++;
-	if (i == ft_strlen(line) && i != 0)
-	{
-		parsed_data->ants = ft_atoi(line);
-		free(line);
+	parsed_data->ants = ant_checker(line);
+	if (parsed_data->ants >= 0)
 		return ;
-	}
-	free(line);
 	write(2, "Invalid Map: no ants amount\n", 28);
 	exit(1);
 }
@@ -70,7 +56,6 @@ static void	link_getter(t_lem_in *parsed_data)
 
 t_lem_in	parser(void)
 {
-	char		*line;
 	t_lem_in	parsed_data;
 
 	ant_getter(&parsed_data);
