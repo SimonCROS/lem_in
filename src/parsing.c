@@ -12,56 +12,94 @@
 
 #include "lem_in.h"
 
-// can't open files
-// int	file_opener(char const *path)
-// {
-// 	int	fd;
-
-// 	fd = open(path, O_RDWR);
-// 	if (fd < 0)
-// 	{
-// 		write(2, "Error opening file\n", 19);
-// 		exit(1);
-// 	}
-// 	return (fd);
-// }
-
-static void	ant_getter(t_lem_in *parsed_data)
+static char	ant_getter(t_lem_in *data, char **lines, int *i)
 {
 	char	*line;
 
-	parsed_data->ants = -1;
-	while(ft_get_next_line(0, 100, &line))
+	data->ants = -1;
+	while (lines[*i])
 	{
-		parsed_data->ants = ant_checker(line);
-		if (parsed_data->ants >= 0)
-			return ;
+		line = lines[*i];
+		(*i)++;
+		if (ft_starts_with(line, "#"))
+			continue ;
+		if (!ft_atoi_full(line, &data->ants))
+			return (FALSE);
+		return (TRUE);
 	}
-	parsed_data->ants = ant_checker(line);
-	if (parsed_data->ants >= 0)
-		return ;
-	write(2, "Invalid Map: no ants amount\n", 28);
-	exit(1);
+	return (FALSE);
 }
 
-static void	room_getter(t_lem_in *parsed_data)
+static char	room_getter(t_lem_in *data, char **lines, int *i)
 {
+	char	*line;
+	char	next_tag;
 
+	while (lines[*i])
+	{
+		line = lines[*i];
+		(*i)++;
+		if (ft_starts_with(line, "#"))
+		{
+			if (ft_strcmp(line, "##start"))
+				next_tag = TAG_START;
+			if (ft_strcmp(line, "##end"))
+				next_tag = TAG_END;
+			continue ;
+		}
+		if (ft_strcnt(line, ' ') != 2)
+			return (FALSE);
+		int		space1 = ft_strindex_of(line, ' ');
+		int		space2 = ft_strindex_of(line + space1 + 1, ' ') + space1 + 1;
+		int		x;
+		int		y;
+
+		line[space1] = '\0';
+		line[space2] = '\0';
+		if (!ft_strlen(line) || !ft_strlen(line + space1 + 1)
+			|| !ft_strlen(line + space2 + 1) 
+			|| !ft_atoi_full(line + space1 + 1, &x)
+			|| !ft_atoi_full(line + space2 + 1, &y))
+			return (next_tag == TAG_NONE);
+		
+		t_room	*room;
+		
+		room = NULL;
+		if (!create_room(line, (int)x, (int)y, &room)
+			|| !lst_unshift(&data->rooms, room))
+		{
+			free(room);
+			return (FALSE);
+		}
+		if (next_tag == TAG_START)
+			data->start = room;
+		if (next_tag == TAG_END)
+			data->end = room;
+		next_tag = TAG_NONE;
+	}
+	return (FALSE);
 }
 
-static void	link_getter(t_lem_in *parsed_data)
+static char	link_getter(t_lem_in *data, char **lines, int *i)
 {
-
+	(void)data;
+	(void)lines;
+	(void)i;
+	return (TRUE);
 }
 
-t_lem_in	parser(void)
+char	parser(t_lem_in *data)
 {
-	t_lem_in	parsed_data;
+	int		line;
 
-	ant_getter(&parsed_data);
-	room_getter(&parsed_data);
-	link_getter(&parsed_data);
+	line = 0;
+	data->lines = read_all_lines(0);
+	if (!data->lines
+		|| !ant_getter(data, data->lines, &line) || data->ants < 1
+		|| !room_getter(data, data->lines, &line) || !data->start || !data->end
+		|| !link_getter(data, data->lines, &line))
+		return (FALSE);
 
-	printf("ants: %i\n", parsed_data.ants);
-	return (parsed_data);
+	printf("ants: %i\n", data->ants);
+	return (TRUE);
 }

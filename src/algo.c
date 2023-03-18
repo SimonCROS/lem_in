@@ -62,8 +62,9 @@ static char	get_next_path(t_lem_in *data, t_list *results, int *results_score)
 
 static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 {
-	int		i;
-	char	res;
+	t_iterator	it;
+	t_room		*room;
+	char		res;
 
 	lst_init(results, (t_consumer)free);
 	*results_score = -1;
@@ -71,12 +72,12 @@ static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 	{
 		if (results->size >= data->checks)
 			break ;
-		i = 0;
-		while (i < data->rooms_len)
+		it = iterator_new(&data->rooms);
+		while (iterator_has_next(&it))
 		{
-			data->rooms[i].dist = 0;
-			data->rooms[i].parent = NULL;
-			i++;
+			room = (t_room *)iterator_next(&it);
+			room->dist = 0;
+			room->parent = NULL;
 		}
 		res = get_next_path(data, results, results_score);
 		if (res == FALSE)

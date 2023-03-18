@@ -12,16 +12,18 @@
 
 #include "lem_in.h"
 
-t_room	create_room(char *name, int x, int y)
+char	create_room(char *name, int x, int y, t_room **room)
 {
-	t_room	room;
+	*room = malloc(sizeof(t_room));
+	if (!*room)
+		return (FALSE);
 
-	room.name = name;
-	room.x = x;
-	room.y = y;
-	room.ant = 0;
-	lst_init(&room.links, NULL);
-	return (room);
+	(*room)->name = name;
+	(*room)->x = x;
+	(*room)->y = y;
+	(*room)->ant = 0;
+	lst_init(&(*room)->links, NULL);
+	return (TRUE);
 }
 
 char	init_link(t_link *link, t_room *left, t_room *right)
@@ -38,14 +40,15 @@ char	init_link(t_link *link, t_room *left, t_room *right)
 
 void	reset_links(t_lem_in *data)
 {
-	int		i;
+	t_iterator	it;
+	t_link		*link;
 
-	i = 0;
-	while (i < data->links_len)
+	it = iterator_new(&data->links);
+	while (iterator_has_next(&it))
 	{
-		if (data->links[i].mask != LINK_BOTH)
-			data->links[i].mask = LINK_NONE;
-		i++;
+		link = (t_link *)iterator_next(&it);
+		if (link->mask != LINK_BOTH)
+			link->mask = LINK_NONE;
 	}
 }
 

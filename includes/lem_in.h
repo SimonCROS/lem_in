@@ -20,11 +20,15 @@
 
 /*** Types ********************************************************************/
 
+# define BUFFER_SIZE 1000000
 # define FAIL 2
 # define LINK_NONE 0b00000000
 # define LINK_RIGHT 0b00000010
 # define LINK_LEFT 0b00000001
 # define LINK_BOTH 0b00000011
+# define TAG_NONE 0
+# define TAG_START 1
+# define TAG_END 2
 
 typedef struct s_parser			t_parser;
 typedef struct s_lem_in			t_lem_in;
@@ -39,14 +43,13 @@ struct s_lem_in
 {
 	t_room			*start;
 	t_room			*end;
-	t_room			*rooms;
-	t_link			*links;
+	t_list			rooms;
+	t_list			links;
 	t_list			best;
+	char			**lines;
 	int				best_score;
 	int				checks;
 	int				ants;
-	int				rooms_len;
-	int				links_len;
 };
 
 // The rooms array is stored just after this struct
@@ -86,10 +89,8 @@ char	bfs(t_room *start, t_room *goal, t_link **cross);
 
 /*** Parsing ******************************************************************/
 
-int			ant_checker(char *line);
-int 		ft_get_next_line(int fd, int b_size, char **line);
-int			file_opener(char const *path);
-t_lem_in	parser(void);
+char	**read_all_lines(int fd);
+char	parser(t_lem_in *data);
 
 /*** Score *******************************************************************/
 
@@ -99,7 +100,7 @@ void	print_result(t_lem_in *data);
 /*** Utils ********************************************************************/
 
 char	init_link(t_link *link, t_room *left, t_room *right);
-t_room	create_room(char *name, int x, int y);
+char	create_room(char *name, int x, int y, t_room **room);
 void	reset_links(t_lem_in *data);
 char	clear_ret_false(t_list *results);
 void	disable_link(t_room *from, t_room *to);

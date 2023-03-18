@@ -14,13 +14,13 @@
 
 static void	print_rooms(t_lem_in *data)
 {
-	int		i;
-	t_room	*room;
+	t_iterator	it;
+	t_room		*room;
 
-	i = 0;
-	while (i < data->rooms_len)
+	it = iterator_new(&data->rooms);
+	while (iterator_has_next(&it))
 	{
-		room = data->rooms + i;
+		room = (t_room *)iterator_next(&it);
 		if (room == data->start)
 			ft_putendl("##start");
 		if (room == data->end)
@@ -31,23 +31,21 @@ static void	print_rooms(t_lem_in *data)
 		ft_putstr(" ");
 		ft_putnbr(room->y);
 		ft_putendl("");
-		i++;
 	}
 }
 
 static void	print_links(t_lem_in *data)
 {
-	int		i;
-	t_link	*link;
+	t_iterator	it;
+	t_link		*link;
 
-	i = 0;
-	while (i < data->links_len)
+	it = iterator_new(&data->links);
+	while (iterator_has_next(&it))
 	{
-		link = data->links + i;
+		link = (t_link *)iterator_next(&it);
 		ft_putstr(link->left->name);
 		ft_putstr("-");
 		ft_putendl(link->right->name);
-		i++;
 	}
 }
 
@@ -107,6 +105,6 @@ void	print_result(t_lem_in *data)
 	ft_putendl("");
 	print_rooms(data);
 	print_links(data);
-	ft_putendl("");
-	print_steps(data);
+	// ft_putendl("");
+	// print_steps(data);
 }

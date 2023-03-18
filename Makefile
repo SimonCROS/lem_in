@@ -20,7 +20,6 @@ override SRCS		:=								\
 				utils.c								\
 				parsing.c							\
 				parsing_utils.c						\
-				parsing_more_utils.c				\
 				debug.c								\
 
 override HEADERS	:=								\
