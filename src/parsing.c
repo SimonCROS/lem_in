@@ -38,9 +38,9 @@ static char	room_getter(t_lem_in *data, char **lines, int *i)
 	while (lines[*i])
 	{
 		line = lines[*i];
-		(*i)++;
 		if (ft_starts_with(line, "#"))
 		{
+			(*i)++;
 			if (ft_strcmp(line, "##start"))
 				next_tag = TAG_START;
 			if (ft_strcmp(line, "##end"))
@@ -48,7 +48,8 @@ static char	room_getter(t_lem_in *data, char **lines, int *i)
 			continue ;
 		}
 		if (ft_strcnt(line, ' ') != 2)
-			return (TRUE);
+			return (next_tag == TAG_NONE);
+		(*i)++;
 		int		space1 = ft_strindex_of(line, ' ');
 		int		space2 = ft_strindex_of(line + space1 + 1, ' ') + space1 + 1;
 		int		x;
@@ -66,7 +67,8 @@ static char	room_getter(t_lem_in *data, char **lines, int *i)
 		
 		room = NULL;
 		if (!create_room(line, (int)x, (int)y, &room)
-			|| !lst_unshift(&data->rooms, room))
+			|| !lst_push(&data->rooms, room)
+			|| !hashmap_set(&data->rooms_names, room->name, room))
 		{
 			free(room);
 			return (FALSE);
@@ -82,9 +84,30 @@ static char	room_getter(t_lem_in *data, char **lines, int *i)
 
 static char	link_getter(t_lem_in *data, char **lines, int *i)
 {
-	(void)data;
-	(void)lines;
-	(void)i;
+	char	*line;
+	t_room	*left;
+	t_room	*right;
+	t_link	*link;
+	int		separator;
+
+	data->ants = -1;
+	while (lines[*i])
+	{
+		line = lines[*i];
+		(*i)++;
+		if (ft_starts_with(line, "#"))
+			continue ;
+		separator = ft_strindex_of(line, '-');
+		if (separator == -1)
+			return (FALSE);
+		line[separator] = '\0';
+		left = hashmap_get(&data->rooms_names, line);
+		right = hashmap_get(&data->rooms_names, line + separator + 1);
+		if (!left || !right
+			|| !create_link(left, right, &link)
+			|| !lst_push(&data->links, link))
+			return (FALSE);
+	}
 	return (TRUE);
 }
 

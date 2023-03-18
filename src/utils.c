@@ -26,15 +26,21 @@ char	create_room(char *name, int x, int y, t_room **room)
 	return (TRUE);
 }
 
-char	init_link(t_link *link, t_room *left, t_room *right)
+char	create_link(t_room *left, t_room *right, t_link **link)
 {
-	link->mask = LINK_NONE;
-	if (!lst_unshift(&left->links, link))
+	*link = malloc(sizeof(t_link));
+	if (!*link)
 		return (FALSE);
-	link->left = left;
-	if (!lst_unshift(&right->links, link))
+
+	(*link)->mask = LINK_NONE;
+	(*link)->left = left;
+	(*link)->right = right;
+	if (!lst_unshift(&left->links, *link)
+		|| !lst_unshift(&right->links, *link))
+	{
+		free(*link);
 		return (FALSE);
-	link->right = right;
+	}
 	return (TRUE);
 }
 

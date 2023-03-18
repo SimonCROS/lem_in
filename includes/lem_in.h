@@ -45,6 +45,7 @@ struct s_lem_in
 	t_room			*end;
 	t_list			rooms;
 	t_list			links;
+	t_hashmap		rooms_names;
 	t_list			best;
 	char			**lines;
 	int				best_score;
@@ -99,7 +100,7 @@ void	print_result(t_lem_in *data);
 
 /*** Utils ********************************************************************/
 
-char	init_link(t_link *link, t_room *left, t_room *right);
+char	create_link(t_room *left, t_room *right, t_link **link);
 char	create_room(char *name, int x, int y, t_room **room);
 void	reset_links(t_lem_in *data);
 char	clear_ret_false(t_list *results);
