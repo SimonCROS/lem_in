@@ -52,7 +52,7 @@ int	main(int argc, char **argv)
 	lst_init(&data.best, (t_con)free);
 	lst_init(&data.rooms, (t_con)del_room);
 	lst_init(&data.links, (t_con)free);
-	if (parser(&data) && lem_in(&data))
+	if (parser(&data) && lem_in(&data) && data.best_score != -1)
 		print_result(&data);
 	else
 		ft_putendl("ERROR");

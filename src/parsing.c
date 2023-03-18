@@ -48,7 +48,7 @@ static char	room_getter(t_lem_in *data, char **lines, int *i)
 			continue ;
 		}
 		if (ft_strcnt(line, ' ') != 2)
-			return (FALSE);
+			return (TRUE);
 		int		space1 = ft_strindex_of(line, ' ');
 		int		space2 = ft_strindex_of(line + space1 + 1, ' ') + space1 + 1;
 		int		x;
@@ -99,7 +99,5 @@ char	parser(t_lem_in *data)
 		|| !room_getter(data, data->lines, &line) || !data->start || !data->end
 		|| !link_getter(data, data->lines, &line))
 		return (FALSE);
-
-	printf("ants: %i\n", data->ants);
 	return (TRUE);
 }

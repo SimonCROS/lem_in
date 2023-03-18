@@ -93,6 +93,8 @@ char	lem_in(t_lem_in *data)
 	t_list	results;
 	int		results_score;
 
+	data->checks = fmini3(data->ants,
+			data->start->links.size, data->end->links.size);
 	while (TRUE)
 	{
 		reset_links(data);
