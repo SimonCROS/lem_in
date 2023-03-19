@@ -22,6 +22,7 @@ char	create_room(char *name, int x, int y, t_room **room)
 	(*room)->x = x;
 	(*room)->y = y;
 	(*room)->ant = 0;
+	(*room)->used = FALSE;
 	lst_init(&(*room)->links, NULL);
 	return (TRUE);
 }

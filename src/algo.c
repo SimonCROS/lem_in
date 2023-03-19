@@ -18,7 +18,7 @@ static char	append_path(t_list *results, t_room *last)
 	int		i;
 
 	path = malloc(sizeof(t_path) + (sizeof(t_room *) * (last->dist + 1)));
-	if (!path || !lst_unshift(results, path))
+	if (!path || !lst_push(results, path))
 	{
 		free(path);
 		return (FALSE);
@@ -29,6 +29,7 @@ static char	append_path(t_list *results, t_room *last)
 	i = 0;
 	while (last)
 	{
+		last->used = TRUE;
 		path->rooms[path->len - i - 1] = last;
 		disable_link(last->parent, last);
 		last = last->parent;
@@ -68,6 +69,12 @@ static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 
 	lst_init(results, (t_consumer)free);
 	*results_score = -1;
+	it = iterator_new(&data->rooms);
+	while (iterator_has_next(&it))
+	{
+		room = (t_room *)iterator_next(&it);
+		room->used = FALSE;
+	}
 	while (TRUE)
 	{
 		if (results->size >= data->checks)

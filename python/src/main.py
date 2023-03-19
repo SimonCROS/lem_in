@@ -35,8 +35,6 @@ if __name__ == '__main__':
     (ants, start, end, rooms, links) = parse(args.file)
 
     checks = min(ants, len(start.links), len(end.links))
-    print(f"Checks: {checks}")
-
 
     while True:
         results: list[list[Room]] = []
@@ -83,6 +81,7 @@ if __name__ == '__main__':
         else:
             break
 
-    print(best)
+    for a in best:
+        print(a);
     if best:
         print(f"With a score of {_score(best) - 2}")

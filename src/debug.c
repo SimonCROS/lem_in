@@ -33,7 +33,9 @@ void	debug_steps(t_lem_in *data)
 		}
 		ft_putstr("] -> ");
 		ft_putnbr(path->ants);
-		ft_putendl(" ants");
+		ft_putstr(" ants - ");
+		ft_putnbr(path->ants + path->len);
+		ft_putendl(" score");
 	}
 	return ;
 }

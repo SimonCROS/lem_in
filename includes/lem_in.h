@@ -71,6 +71,7 @@ struct s_room
 	int				y;
 	int				ant;
 	int				dist;
+	int				used;
 };
 
 struct s_link
