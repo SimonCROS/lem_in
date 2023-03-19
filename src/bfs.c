@@ -12,22 +12,28 @@
 
 #include "lem_in.h"
 
-static t_room	*try_get_dest(t_link *link, t_room *src, t_link **cross)
+static void	check_cross(t_room *src, t_link **cross)
 {
-	if (link->left == src)
+	t_iterator	it;
+	t_link		*link;
+
+	it = iterator_new(&src->links);
+	while (iterator_has_next(&it))
 	{
-		if (link->mask & LINK_LEFT)
+		link = (t_link *)iterator_next(&it);
+		if (link->left == src && link->mask & LINK_LEFT)
 			*cross = link;
-		else if (!(link->mask & LINK_RIGHT))
-			return (link->right);
-	}
-	if (link->right == src)
-	{
-		if (link->mask & LINK_RIGHT)
+		if (link->right == src && link->mask & LINK_RIGHT)
 			*cross = link;
-		else if (!(link->mask & LINK_LEFT))
-			return (link->left);
 	}
+}
+
+static t_room	*try_get_dest(t_link *link, t_room *src)
+{
+	if (link->left == src && !(link->mask & LINK_RIGHT))
+		return (link->right);
+	if (link->right == src && !(link->mask & LINK_LEFT))
+		return (link->left);
 	return (NULL);
 }
 
@@ -37,7 +43,6 @@ char	bfs(t_room *start, t_room *goal, t_link **cross)
 	t_room		*child;
 	t_clist		open;
 	t_iterator	it;
-	t_iterator	it2;
 
 	*cross = NULL;
 	clst_init(&open, NULL);
@@ -50,14 +55,12 @@ char	bfs(t_room *start, t_room *goal, t_link **cross)
 		it = iterator_new(&current->links);
 		while (iterator_has_next(&it))
 		{
-			child = try_get_dest((t_link *)iterator_next(&it), current, cross);
+			child = try_get_dest((t_link *)iterator_next(&it), current);
 			if (!child || child->dist != 0 || child == start)
 				continue ;
 			if (child->used && child != goal)
 			{
-				it2 = iterator_new(&child->links);
-				while (iterator_has_next(&it2))
-					try_get_dest((t_link *)iterator_next(&it2), child, cross);
+				check_cross(child, cross);
 				continue ;
 			}
 			child->dist = current->dist + 1;
