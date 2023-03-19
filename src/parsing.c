@@ -16,7 +16,6 @@ static char	ant_getter(t_lem_in *data, char **lines, int *i)
 {
 	char	*line;
 
-	data->ants = -1;
 	while (lines[*i])
 	{
 		line = lines[*i];
@@ -91,7 +90,6 @@ static char	link_getter(t_lem_in *data, char **lines, int *i)
 	t_link	*link;
 	int		separator;
 
-	data->ants = -1;
 	while (lines[*i])
 	{
 		line = lines[*i];

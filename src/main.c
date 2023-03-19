@@ -60,7 +60,6 @@ int	main(int argc, char **argv)
 		print_result(&data);
 	else
 		ft_putendl("ERROR");
-	print_result(&data);
 	clean(&data);
 	return (0);
 }
