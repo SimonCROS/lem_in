@@ -52,7 +52,7 @@ static char	room_getter(t_lem_in *data, char **lines, int *i)
 				next_tag = TAG_END;
 			continue ;
 		}
-		if (ft_strcnt(line, ' ') != 2)
+		if (ft_strcnt(line, ' ') != 2 || ft_starts_with(line, "L"))
 			return (next_tag == TAG_NONE);
 		(*i)++;
 		space1 = ft_strindex_of(line, ' ');
