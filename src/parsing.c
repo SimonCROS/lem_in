@@ -33,6 +33,11 @@ static char	room_getter(t_lem_in *data, char **lines, int *i)
 {
 	char	*line;
 	char	next_tag;
+	int		space1;
+	int		space2;
+	int		x;
+	int		y;
+	t_room	*room;
 
 	next_tag = TAG_NONE;
 	while (lines[*i])
@@ -50,21 +55,15 @@ static char	room_getter(t_lem_in *data, char **lines, int *i)
 		if (ft_strcnt(line, ' ') != 2)
 			return (next_tag == TAG_NONE);
 		(*i)++;
-		int		space1 = ft_strindex_of(line, ' ');
-		int		space2 = ft_strindex_of(line + space1 + 1, ' ') + space1 + 1;
-		int		x;
-		int		y;
-
+		space1 = ft_strindex_of(line, ' ');
+		space2 = ft_strindex_of(line + space1 + 1, ' ') + space1 + 1;
 		line[space1] = '\0';
 		line[space2] = '\0';
 		if (!ft_strlen(line) || !ft_strlen(line + space1 + 1)
-			|| !ft_strlen(line + space2 + 1) 
+			|| !ft_strlen(line + space2 + 1)
 			|| !ft_atoi_full(line + space1 + 1, &x)
 			|| !ft_atoi_full(line + space2 + 1, &y))
 			return (next_tag == TAG_NONE);
-		
-		t_room	*room;
-		
 		room = NULL;
 		if (!create_room(line, (int)x, (int)y, &room)
 			|| !lst_push(&data->rooms, room)
