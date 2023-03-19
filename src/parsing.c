@@ -35,15 +35,16 @@ static char	room_getter(t_lem_in *data, char **lines, int *i)
 	char	*line;
 	char	next_tag;
 
+	next_tag = TAG_NONE;
 	while (lines[*i])
 	{
 		line = lines[*i];
 		if (ft_starts_with(line, "#"))
 		{
 			(*i)++;
-			if (ft_strcmp(line, "##start"))
+			if (ft_strcmp(line, "##start") == 0)
 				next_tag = TAG_START;
-			if (ft_strcmp(line, "##end"))
+			if (ft_strcmp(line, "##end") == 0)
 				next_tag = TAG_END;
 			continue ;
 		}

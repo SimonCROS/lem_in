@@ -105,6 +105,6 @@ void	print_result(t_lem_in *data)
 	ft_putendl("");
 	print_rooms(data);
 	print_links(data);
-	ft_putendl("");
-	print_steps(data);
+	// ft_putendl("");
+	// print_steps(data);
 }
