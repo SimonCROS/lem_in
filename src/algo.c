@@ -67,12 +67,6 @@ static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 
 	lst_init(results, (t_consumer)free);
 	*results_score = -1;
-	it = iterator_new(&data->rooms);
-	while (iterator_has_next(&it))
-	{
-		room = (t_room *)iterator_next(&it);
-		room->used = FALSE;
-	}
 	while (TRUE)
 	{
 		if (results->size >= data->checks)
@@ -102,7 +96,7 @@ char	lem_in(t_lem_in *data)
 			data->start->links.size, data->end->links.size);
 	while (TRUE)
 	{
-		reset_links(data);
+		reset_datas(data);
 		if (!get_path_group(data, &results, &rs))
 			return (clear_ret_false(&data->best));
 		if (rs != -1 && (rs < data->best_score || data->best_score == -1))

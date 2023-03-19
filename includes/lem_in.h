@@ -103,7 +103,7 @@ void	print_result(t_lem_in *data);
 
 char	create_link(t_room *left, t_room *right, t_link **link);
 char	create_room(char *name, int x, int y, t_room **room);
-void	reset_links(t_lem_in *data);
+void	reset_datas(t_lem_in *data);
 char	clear_ret_false(t_list *results);
 void	disable_link(t_room *from, t_room *to);
 

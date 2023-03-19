@@ -43,10 +43,11 @@ char	create_link(t_room *left, t_room *right, t_link **link)
 	return (TRUE);
 }
 
-void	reset_links(t_lem_in *data)
+void	reset_datas(t_lem_in *data)
 {
 	t_iterator	it;
 	t_link		*link;
+	t_room		*room;
 
 	it = iterator_new(&data->links);
 	while (iterator_has_next(&it))
@@ -54,6 +55,12 @@ void	reset_links(t_lem_in *data)
 		link = (t_link *)iterator_next(&it);
 		if (link->mask != LINK_BOTH)
 			link->mask = LINK_NONE;
+	}
+	it = iterator_new(&data->rooms);
+	while (iterator_has_next(&it))
+	{
+		room = (t_room *)iterator_next(&it);
+		room->used = FALSE;
 	}
 }
 
