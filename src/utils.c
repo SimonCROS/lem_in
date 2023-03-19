@@ -17,7 +17,6 @@ char	create_room(char *name, int x, int y, t_room **room)
 	*room = malloc(sizeof(t_room));
 	if (!*room)
 		return (FALSE);
-
 	(*room)->name = name;
 	(*room)->x = x;
 	(*room)->y = y;
@@ -32,7 +31,6 @@ char	create_link(t_room *left, t_room *right, t_link **link)
 	*link = malloc(sizeof(t_link));
 	if (!*link)
 		return (FALSE);
-
 	(*link)->mask = LINK_NONE;
 	(*link)->left = left;
 	(*link)->right = right;

@@ -37,6 +37,22 @@ static t_room	*try_get_dest(t_link *link, t_room *src)
 	return (NULL);
 }
 
+static t_room	*process_link(t_room *child,
+	t_room *goal, t_room *current, t_link **cross)
+{
+	if (!child || child->dist != 0)
+		return (NULL);
+	if (child->used && child != goal)
+	{
+		if (!*cross)
+			check_cross(child, cross);
+		return (NULL);
+	}
+	child->dist = current->dist + 1;
+	child->parent = current;
+	return (child);
+}
+
 char	bfs(t_room *start, t_room *goal, t_link **cross)
 {
 	t_room		*current;
@@ -56,16 +72,8 @@ char	bfs(t_room *start, t_room *goal, t_link **cross)
 		while (iterator_has_next(&it))
 		{
 			child = try_get_dest((t_link *)iterator_next(&it), current);
-			if (!child || child->dist != 0 || child == start)
-				continue ;
-			if (child->used && child != goal)
-			{
-				check_cross(child, cross);
-				continue ;
-			}
-			child->dist = current->dist + 1;
-			child->parent = current;
-			clst_push(&open, child);
+			if (child != start && process_link(child, goal, current, cross))
+				clst_push(&open, child);
 		}
 	}
 	return (FALSE);
