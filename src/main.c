@@ -29,7 +29,7 @@ static void	clean(t_lem_in *data)
 	lst_clear(&data->best);
 	lst_clear(&data->rooms);
 	lst_clear(&data->links);
-	hashmap_clear(&data->rooms_names);
+	hashmap_free(&data->rooms_names);
 	while (data->lines && data->lines[line])
 		free(data->lines[line++]);
 	free(data->lines);
