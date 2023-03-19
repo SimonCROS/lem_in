@@ -53,8 +53,6 @@ static char	get_next_path(t_lem_in *data, t_list *results, int *results_score)
 			*results_score = score;
 			return (1);
 		}
-		else
-			return (2);
 	}
 	if (cross)
 		cross->mask = LINK_BOTH;
@@ -98,23 +96,22 @@ static char	get_path_group(t_lem_in *data, t_list *results, int *results_score)
 char	lem_in(t_lem_in *data)
 {
 	t_list	results;
-	int		results_score;
+	int		rs;
 
 	data->checks = fmini3(data->ants,
 			data->start->links.size, data->end->links.size);
 	while (TRUE)
 	{
 		reset_links(data);
-		if (!get_path_group(data, &results, &results_score))
+		if (!get_path_group(data, &results, &rs))
 			return (clear_ret_false(&data->best));
-		if (results_score != -1
-			&& (results_score < data->best_score || data->best_score == -1))
+		if (rs != -1 && (rs < data->best_score || data->best_score == -1))
 		{
 			lst_clear(&data->best);
 			if (!lst_copy_to(&results, &data->best))
 				return (clear_ret_false(&results));
 			lst_shallow_clear(&results);
-			data->best_score = results_score;
+			data->best_score = rs;
 		}
 		else
 		{
