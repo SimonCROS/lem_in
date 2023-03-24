@@ -29,15 +29,40 @@ static char	ant_getter(t_lem_in *data, char **lines, int *i)
 	return (FALSE);
 }
 
-static char	room_getter(t_lem_in *data, char **lines, int *i)
+static char	parse_room(t_lem_in *da, char *li, char next_tag)
 {
-	char	*line;
-	char	next_tag;
-	int		space1;
-	int		space2;
+	t_room	*room;
+	int		s1;
+	int		s2;
 	int		x;
 	int		y;
-	t_room	*room;
+
+	s1 = ft_strindex_of(li, ' ');
+	s2 = ft_strindex_of(li + s1 + 1, ' ') + s1 + 1;
+	li[s1] = '\0';
+	li[s2] = '\0';
+	if (!ft_strlen(li) || !ft_strlen(li + s1 + 1) || !ft_strlen(li + s2 + 1)
+		|| !ft_atoi_full(li + s1 + 1, &x) || !ft_atoi_full(li + s2 + 1, &y))
+		return (next_tag == TAG_NONE);
+	room = NULL;
+	if (!create_room(li, (int)x, (int)y, &room) || !lst_push(&da->rooms, room)
+		|| !hashmap_set(&da->rooms_names, room->name, room))
+	{
+		free(room);
+		return (FALSE);
+	}
+	if (next_tag == TAG_START)
+		da->start = room;
+	if (next_tag == TAG_END)
+		da->end = room;
+	return (2);
+}
+
+static char	room_getter(t_lem_in *data, char **lines, int *i)
+{
+	int		ret;
+	char	*line;
+	char	next_tag;
 
 	next_tag = TAG_NONE;
 	while (lines[*i])
@@ -54,28 +79,9 @@ static char	room_getter(t_lem_in *data, char **lines, int *i)
 		}
 		if (ft_strcnt(line, ' ') != 2 || ft_starts_with(line, "L"))
 			return (next_tag == TAG_NONE);
-		(*i)++;
-		space1 = ft_strindex_of(line, ' ');
-		space2 = ft_strindex_of(line + space1 + 1, ' ') + space1 + 1;
-		line[space1] = '\0';
-		line[space2] = '\0';
-		if (!ft_strlen(line) || !ft_strlen(line + space1 + 1)
-			|| !ft_strlen(line + space2 + 1)
-			|| !ft_atoi_full(line + space1 + 1, &x)
-			|| !ft_atoi_full(line + space2 + 1, &y))
-			return (next_tag == TAG_NONE);
-		room = NULL;
-		if (!create_room(line, (int)x, (int)y, &room)
-			|| !lst_push(&data->rooms, room)
-			|| !hashmap_set(&data->rooms_names, room->name, room))
-		{
-			free(room);
-			return (FALSE);
-		}
-		if (next_tag == TAG_START)
-			data->start = room;
-		if (next_tag == TAG_END)
-			data->end = room;
+		ret = parse_room(data, lines[(*i)++], next_tag);
+		if (ret != 2)
+			return (ret);
 		next_tag = TAG_NONE;
 	}
 	return (FALSE);
